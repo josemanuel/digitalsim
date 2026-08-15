@@ -1,0 +1,28 @@
+{
+  "formatVersion": "1.0",
+  "circuit": {
+    "id": "full_adder",
+    "components": [
+      { "id": "a", "type": "SWITCH", "label": "A", "params": { "width": 1, "initialValue": 0 }, "position": { "x": 40, "y": 40 }, "rotation": 0 },
+      { "id": "b", "type": "SWITCH", "label": "B", "params": { "width": 1, "initialValue": 0 }, "position": { "x": 40, "y": 130 }, "rotation": 0 },
+      { "id": "cin", "type": "SWITCH", "label": "Cin", "params": { "width": 1, "initialValue": 0 }, "position": { "x": 40, "y": 220 }, "rotation": 0 },
+      { "id": "xor1", "type": "XOR_GATE", "label": "XOR1", "params": { "operation": "XOR", "numInputs": 2, "bitWidth": 1, "hasEnable": false }, "position": { "x": 220, "y": 60 }, "rotation": 0 },
+      { "id": "and1", "type": "AND_GATE", "label": "AND1", "params": { "operation": "AND", "numInputs": 2, "bitWidth": 1, "hasEnable": false }, "position": { "x": 220, "y": 180 }, "rotation": 0 },
+      { "id": "xor2", "type": "XOR_GATE", "label": "XOR2", "params": { "operation": "XOR", "numInputs": 2, "bitWidth": 1, "hasEnable": false }, "position": { "x": 400, "y": 60 }, "rotation": 0 },
+      { "id": "and2", "type": "AND_GATE", "label": "AND2", "params": { "operation": "AND", "numInputs": 2, "bitWidth": 1, "hasEnable": false }, "position": { "x": 400, "y": 180 }, "rotation": 0 },
+      { "id": "or1", "type": "OR_GATE", "label": "OR", "params": { "operation": "OR", "numInputs": 2, "bitWidth": 1, "hasEnable": false }, "position": { "x": 560, "y": 180 }, "rotation": 0 },
+      { "id": "sum_led", "type": "LED", "label": "SUM", "params": { "width": 1 }, "position": { "x": 580, "y": 40 }, "rotation": 0 },
+      { "id": "cout_led", "type": "LED", "label": "COUT", "params": { "width": 1 }, "position": { "x": 740, "y": 180 }, "rotation": 0 }
+    ],
+    "nets": [
+      { "id": "n1", "width": 1, "pins": [{ "component": "a", "pin": "out" }, { "component": "xor1", "pin": "in0" }, { "component": "and1", "pin": "in0" }] },
+      { "id": "n2", "width": 1, "pins": [{ "component": "b", "pin": "out" }, { "component": "xor1", "pin": "in1" }, { "component": "and1", "pin": "in1" }] },
+      { "id": "n3", "width": 1, "pins": [{ "component": "xor1", "pin": "out" }, { "component": "xor2", "pin": "in0" }, { "component": "and2", "pin": "in0" }] },
+      { "id": "n4", "width": 1, "pins": [{ "component": "cin", "pin": "out" }, { "component": "xor2", "pin": "in1" }, { "component": "and2", "pin": "in1" }] },
+      { "id": "n5", "width": 1, "pins": [{ "component": "xor2", "pin": "out" }, { "component": "sum_led", "pin": "in" }] },
+      { "id": "n6", "width": 1, "pins": [{ "component": "and1", "pin": "out" }, { "component": "or1", "pin": "in0" }] },
+      { "id": "n7", "width": 1, "pins": [{ "component": "and2", "pin": "out" }, { "component": "or1", "pin": "in1" }] },
+      { "id": "n8", "width": 1, "pins": [{ "component": "or1", "pin": "out" }, { "component": "cout_led", "pin": "in" }] }
+    ]
+  }
+}

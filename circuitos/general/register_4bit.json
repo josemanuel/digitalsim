@@ -1,0 +1,22 @@
+{
+  "formatVersion": "1.0",
+  "circuit": {
+    "id": "register_4bit",
+    "components": [
+      { "id": "data", "type": "DIP_SWITCH", "label": "DATA", "params": { "width": 4, "initialValue": 0 }, "position": { "x": 40, "y": 40 }, "rotation": 0 },
+      { "id": "clk", "type": "PUSH_BUTTON", "label": "CLK", "params": { "activeHigh": true, "width": 1, "initialValue": 0 }, "position": { "x": 40, "y": 180 }, "rotation": 0 },
+      { "id": "en", "type": "SWITCH", "label": "EN", "params": { "width": 1, "initialValue": 1 }, "position": { "x": 40, "y": 280 }, "rotation": 0 },
+      { "id": "clr", "type": "PUSH_BUTTON", "label": "CLR", "params": { "activeHigh": true, "width": 1, "initialValue": 0 }, "position": { "x": 40, "y": 380 }, "rotation": 0 },
+      { "id": "reg", "type": "REGISTER", "label": "REG", "params": { "nextState": "D", "bitWidth": 4, "edge": "rising", "hasEnable": true, "hasPreset": false, "hasClear": true }, "position": { "x": 280, "y": 160 }, "rotation": 0 },
+      { "id": "mon", "type": "HEX_MONITOR", "label": "Q", "params": { "width": 4, "format": "hex" }, "position": { "x": 520, "y": 160 }, "rotation": 0 },
+      { "id": "bin", "type": "BINARY_MONITOR", "label": "Q bin", "params": { "width": 4, "format": "binary" }, "position": { "x": 520, "y": 280 }, "rotation": 0 }
+    ],
+    "nets": [
+      { "id": "n1", "width": 4, "pins": [{ "component": "data", "pin": "out" }, { "component": "reg", "pin": "d" }] },
+      { "id": "n2", "width": 1, "pins": [{ "component": "clk", "pin": "out" }, { "component": "reg", "pin": "clk" }] },
+      { "id": "n3", "width": 1, "pins": [{ "component": "en", "pin": "out" }, { "component": "reg", "pin": "en" }] },
+      { "id": "n4", "width": 1, "pins": [{ "component": "clr", "pin": "out" }, { "component": "reg", "pin": "clr" }] },
+      { "id": "n5", "width": 4, "pins": [{ "component": "reg", "pin": "q" }, { "component": "mon", "pin": "in" }, { "component": "bin", "pin": "in" }] }
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "formatVersion": "1.0",
+  "circuit": {
+    "id": "alu_4bit",
+    "components": [
+      { "id": "a", "type": "DIP_SWITCH", "label": "A", "params": { "width": 4, "initialValue": 3 }, "position": { "x": 40, "y": 40 }, "rotation": 0 },
+      { "id": "b", "type": "DIP_SWITCH", "label": "B", "params": { "width": 4, "initialValue": 1 }, "position": { "x": 40, "y": 160 }, "rotation": 0 },
+      { "id": "op", "type": "DIP_SWITCH", "label": "OP", "params": { "width": 3, "initialValue": 0 }, "position": { "x": 40, "y": 280 }, "rotation": 0 },
+      { "id": "cin", "type": "SWITCH", "label": "Cin", "params": { "width": 1, "initialValue": 0 }, "position": { "x": 40, "y": 400 }, "rotation": 0 },
+      { "id": "alu", "type": "ALU_N_BIT", "label": "ALU", "params": { "bitWidth": 4 }, "position": { "x": 280, "y": 160 }, "rotation": 0 },
+      { "id": "out_hex", "type": "HEX_MONITOR", "label": "OUT", "params": { "width": 4, "format": "hex" }, "position": { "x": 520, "y": 80 }, "rotation": 0 },
+      { "id": "out_bin", "type": "BINARY_MONITOR", "label": "OUT bin", "params": { "width": 4, "format": "binary" }, "position": { "x": 520, "y": 180 }, "rotation": 0 },
+      { "id": "cout_led", "type": "LED", "label": "COUT", "params": { "width": 1 }, "position": { "x": 520, "y": 280 }, "rotation": 0 },
+      { "id": "zero_led", "type": "LED", "label": "ZERO", "params": { "width": 1 }, "position": { "x": 520, "y": 360 }, "rotation": 0 }
+    ],
+    "nets": [
+      { "id": "n1", "width": 4, "pins": [{ "component": "a", "pin": "out" }, { "component": "alu", "pin": "a" }] },
+      { "id": "n2", "width": 4, "pins": [{ "component": "b", "pin": "out" }, { "component": "alu", "pin": "b" }] },
+      { "id": "n3", "width": 3, "pins": [{ "component": "op", "pin": "out" }, { "component": "alu", "pin": "op" }] },
+      { "id": "n4", "width": 1, "pins": [{ "component": "cin", "pin": "out" }, { "component": "alu", "pin": "cin" }] },
+      { "id": "n5", "width": 4, "pins": [{ "component": "alu", "pin": "out" }, { "component": "out_hex", "pin": "in" }, { "component": "out_bin", "pin": "in" }] },
+      { "id": "n6", "width": 1, "pins": [{ "component": "alu", "pin": "cout" }, { "component": "cout_led", "pin": "in" }] },
+      { "id": "n7", "width": 1, "pins": [{ "component": "alu", "pin": "zero" }, { "component": "zero_led", "pin": "in" }] }
+    ]
+  }
+}

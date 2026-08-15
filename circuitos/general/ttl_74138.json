@@ -1,0 +1,37 @@
+{
+  "formatVersion": "1.0",
+  "circuit": {
+    "id": "ttl_74138",
+    "components": [
+      { "id": "a0", "type": "SWITCH", "label": "A0", "params": { "width": 1, "initialValue": 0 }, "position": { "x": 40, "y": 40 }, "rotation": 0 },
+      { "id": "a1", "type": "SWITCH", "label": "A1", "params": { "width": 1, "initialValue": 0 }, "position": { "x": 40, "y": 120 }, "rotation": 0 },
+      { "id": "a2", "type": "SWITCH", "label": "A2", "params": { "width": 1, "initialValue": 0 }, "position": { "x": 40, "y": 200 }, "rotation": 0 },
+      { "id": "en", "type": "SWITCH", "label": "EN", "params": { "width": 1, "initialValue": 1 }, "position": { "x": 40, "y": 300 }, "rotation": 0 },
+      { "id": "join", "type": "JOINER", "label": "A", "params": { "widths": [1, 1, 1] }, "position": { "x": 200, "y": 100 }, "rotation": 0 },
+      { "id": "ic", "type": "74138", "label": "74138", "params": { "selWidth": 3, "hasEnable": true }, "position": { "x": 400, "y": 140 }, "rotation": 0 },
+      { "id": "y0", "type": "LED", "label": "Y0", "params": { "width": 1 }, "position": { "x": 640, "y": 0 }, "rotation": 0 },
+      { "id": "y1", "type": "LED", "label": "Y1", "params": { "width": 1 }, "position": { "x": 640, "y": 60 }, "rotation": 0 },
+      { "id": "y2", "type": "LED", "label": "Y2", "params": { "width": 1 }, "position": { "x": 640, "y": 120 }, "rotation": 0 },
+      { "id": "y3", "type": "LED", "label": "Y3", "params": { "width": 1 }, "position": { "x": 640, "y": 180 }, "rotation": 0 },
+      { "id": "y4", "type": "LED", "label": "Y4", "params": { "width": 1 }, "position": { "x": 640, "y": 240 }, "rotation": 0 },
+      { "id": "y5", "type": "LED", "label": "Y5", "params": { "width": 1 }, "position": { "x": 640, "y": 300 }, "rotation": 0 },
+      { "id": "y6", "type": "LED", "label": "Y6", "params": { "width": 1 }, "position": { "x": 640, "y": 360 }, "rotation": 0 },
+      { "id": "y7", "type": "LED", "label": "Y7", "params": { "width": 1 }, "position": { "x": 640, "y": 420 }, "rotation": 0 }
+    ],
+    "nets": [
+      { "id": "n1", "width": 1, "pins": [{ "component": "a0", "pin": "out" }, { "component": "join", "pin": "in0" }] },
+      { "id": "n2", "width": 1, "pins": [{ "component": "a1", "pin": "out" }, { "component": "join", "pin": "in1" }] },
+      { "id": "n3", "width": 1, "pins": [{ "component": "a2", "pin": "out" }, { "component": "join", "pin": "in2" }] },
+      { "id": "n4", "width": 3, "pins": [{ "component": "join", "pin": "out" }, { "component": "ic", "pin": "sel" }] },
+      { "id": "n5", "width": 1, "pins": [{ "component": "en", "pin": "out" }, { "component": "ic", "pin": "en" }] },
+      { "id": "n6", "width": 1, "pins": [{ "component": "ic", "pin": "out0" }, { "component": "y0", "pin": "in" }] },
+      { "id": "n7", "width": 1, "pins": [{ "component": "ic", "pin": "out1" }, { "component": "y1", "pin": "in" }] },
+      { "id": "n8", "width": 1, "pins": [{ "component": "ic", "pin": "out2" }, { "component": "y2", "pin": "in" }] },
+      { "id": "n9", "width": 1, "pins": [{ "component": "ic", "pin": "out3" }, { "component": "y3", "pin": "in" }] },
+      { "id": "n10", "width": 1, "pins": [{ "component": "ic", "pin": "out4" }, { "component": "y4", "pin": "in" }] },
+      { "id": "n11", "width": 1, "pins": [{ "component": "ic", "pin": "out5" }, { "component": "y5", "pin": "in" }] },
+      { "id": "n12", "width": 1, "pins": [{ "component": "ic", "pin": "out6" }, { "component": "y6", "pin": "in" }] },
+      { "id": "n13", "width": 1, "pins": [{ "component": "ic", "pin": "out7" }, { "component": "y7", "pin": "in" }] }
+    ]
+  }
+}

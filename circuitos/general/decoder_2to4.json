@@ -1,0 +1,25 @@
+{
+  "formatVersion": "1.0",
+  "circuit": {
+    "id": "decoder_2to4",
+    "components": [
+      { "id": "s0", "type": "SWITCH", "label": "S0", "params": { "width": 1, "initialValue": 0 }, "position": { "x": 40, "y": 80 }, "rotation": 0 },
+      { "id": "s1", "type": "SWITCH", "label": "S1", "params": { "width": 1, "initialValue": 0 }, "position": { "x": 40, "y": 180 }, "rotation": 0 },
+      { "id": "join", "type": "JOINER", "label": "SEL", "params": { "widths": [1, 1] }, "position": { "x": 200, "y": 120 }, "rotation": 0 },
+      { "id": "dec", "type": "DECODER", "label": "DEC 2→4", "params": { "selWidth": 2, "hasEnable": false }, "position": { "x": 380, "y": 120 }, "rotation": 0 },
+      { "id": "led0", "type": "LED", "label": "Y0", "params": { "width": 1 }, "position": { "x": 600, "y": 20 }, "rotation": 0 },
+      { "id": "led1", "type": "LED", "label": "Y1", "params": { "width": 1 }, "position": { "x": 600, "y": 100 }, "rotation": 0 },
+      { "id": "led2", "type": "LED", "label": "Y2", "params": { "width": 1 }, "position": { "x": 600, "y": 180 }, "rotation": 0 },
+      { "id": "led3", "type": "LED", "label": "Y3", "params": { "width": 1 }, "position": { "x": 600, "y": 260 }, "rotation": 0 }
+    ],
+    "nets": [
+      { "id": "n1", "width": 1, "pins": [{ "component": "s0", "pin": "out" }, { "component": "join", "pin": "in0" }] },
+      { "id": "n2", "width": 1, "pins": [{ "component": "s1", "pin": "out" }, { "component": "join", "pin": "in1" }] },
+      { "id": "n3", "width": 2, "pins": [{ "component": "join", "pin": "out" }, { "component": "dec", "pin": "sel" }] },
+      { "id": "n4", "width": 1, "pins": [{ "component": "dec", "pin": "out0" }, { "component": "led0", "pin": "in" }] },
+      { "id": "n5", "width": 1, "pins": [{ "component": "dec", "pin": "out1" }, { "component": "led1", "pin": "in" }] },
+      { "id": "n6", "width": 1, "pins": [{ "component": "dec", "pin": "out2" }, { "component": "led2", "pin": "in" }] },
+      { "id": "n7", "width": 1, "pins": [{ "component": "dec", "pin": "out3" }, { "component": "led3", "pin": "in" }] }
+    ]
+  }
+}

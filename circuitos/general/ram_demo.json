@@ -1,0 +1,22 @@
+{
+  "formatVersion": "1.0",
+  "circuit": {
+    "id": "ram_demo",
+    "components": [
+      { "id": "addr", "type": "DIP_SWITCH", "label": "ADDR", "params": { "width": 2, "initialValue": 0 }, "position": { "x": 40, "y": 40 }, "rotation": 0 },
+      { "id": "din", "type": "DIP_SWITCH", "label": "DIN", "params": { "width": 4, "initialValue": 0 }, "position": { "x": 40, "y": 160 }, "rotation": 0 },
+      { "id": "we", "type": "SWITCH", "label": "WE", "params": { "width": 1, "initialValue": 0 }, "position": { "x": 40, "y": 280 }, "rotation": 0 },
+      { "id": "clk", "type": "PUSH_BUTTON", "label": "CLK", "params": { "activeHigh": true, "width": 1, "initialValue": 0 }, "position": { "x": 40, "y": 380 }, "rotation": 0 },
+      { "id": "ram", "type": "RAM", "label": "RAM 4×4", "params": { "addrWidth": 2, "dataWidth": 4 }, "position": { "x": 280, "y": 160 }, "rotation": 0 },
+      { "id": "dout_hex", "type": "HEX_MONITOR", "label": "DOUT", "params": { "width": 4, "format": "hex" }, "position": { "x": 520, "y": 120 }, "rotation": 0 },
+      { "id": "dout_bin", "type": "BINARY_MONITOR", "label": "DOUT bin", "params": { "width": 4, "format": "binary" }, "position": { "x": 520, "y": 240 }, "rotation": 0 }
+    ],
+    "nets": [
+      { "id": "n1", "width": 2, "pins": [{ "component": "addr", "pin": "out" }, { "component": "ram", "pin": "addr" }] },
+      { "id": "n2", "width": 4, "pins": [{ "component": "din", "pin": "out" }, { "component": "ram", "pin": "din" }] },
+      { "id": "n3", "width": 1, "pins": [{ "component": "we", "pin": "out" }, { "component": "ram", "pin": "we" }] },
+      { "id": "n4", "width": 1, "pins": [{ "component": "clk", "pin": "out" }, { "component": "ram", "pin": "clk" }] },
+      { "id": "n5", "width": 4, "pins": [{ "component": "ram", "pin": "dout" }, { "component": "dout_hex", "pin": "in" }, { "component": "dout_bin", "pin": "in" }] }
+    ]
+  }
+}

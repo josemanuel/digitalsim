@@ -1,0 +1,22 @@
+{
+  "formatVersion": "1.0",
+  "circuit": {
+    "id": "adder_7seg",
+    "components": [
+      { "id": "a", "type": "DIP_SWITCH", "label": "A", "params": { "width": 4, "initialValue": 5 }, "position": { "x": 40, "y": 40 }, "rotation": 0 },
+      { "id": "b", "type": "DIP_SWITCH", "label": "B", "params": { "width": 4, "initialValue": 3 }, "position": { "x": 40, "y": 160 }, "rotation": 0 },
+      { "id": "cin", "type": "SWITCH", "label": "Cin", "params": { "width": 1, "initialValue": 0 }, "position": { "x": 40, "y": 280 }, "rotation": 0 },
+      { "id": "add", "type": "ADDER", "label": "ADDER", "params": { "bitWidth": 4 }, "position": { "x": 280, "y": 120 }, "rotation": 0 },
+      { "id": "seg", "type": "SEVEN_SEGMENT_DISPLAY", "label": "SUM", "params": {}, "position": { "x": 520, "y": 80 }, "rotation": 0 },
+      { "id": "hex", "type": "HEX_MONITOR", "label": "SUM hex", "params": { "width": 4, "format": "hex" }, "position": { "x": 520, "y": 220 }, "rotation": 0 },
+      { "id": "cout_led", "type": "LED", "label": "COUT", "params": { "width": 1 }, "position": { "x": 520, "y": 320 }, "rotation": 0 }
+    ],
+    "nets": [
+      { "id": "n1", "width": 4, "pins": [{ "component": "a", "pin": "out" }, { "component": "add", "pin": "a" }] },
+      { "id": "n2", "width": 4, "pins": [{ "component": "b", "pin": "out" }, { "component": "add", "pin": "b" }] },
+      { "id": "n3", "width": 1, "pins": [{ "component": "cin", "pin": "out" }, { "component": "add", "pin": "cin" }] },
+      { "id": "n4", "width": 4, "pins": [{ "component": "add", "pin": "sum" }, { "component": "seg", "pin": "value" }, { "component": "hex", "pin": "in" }] },
+      { "id": "n5", "width": 1, "pins": [{ "component": "add", "pin": "cout" }, { "component": "cout_led", "pin": "in" }] }
+    ]
+  }
+}
