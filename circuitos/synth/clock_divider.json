@@ -1,0 +1,25 @@
+{
+  "formatVersion": "1.0",
+  "circuit": {
+    "id": "clock_divider",
+    "components": [
+      { "id": "master", "type": "CLOCK", "label": "MASTER CLK", "params": { "period": 16, "width": 1, "initialValue": 0 }, "position": { "x": 40, "y": 160 }, "rotation": 0 },
+      { "id": "cnt", "type": "COUNTER", "label": "DIV", "params": { "bitWidth": 4, "mode": "up", "hasEnable": false, "hasClear": true, "hasLoad": false }, "position": { "x": 240, "y": 160 }, "rotation": 0 },
+      { "id": "clr", "type": "PUSH_BUTTON", "label": "RESET", "params": { "activeHigh": true, "width": 1, "initialValue": 0 }, "position": { "x": 40, "y": 280 }, "rotation": 0 },
+      { "id": "split", "type": "SPLITTER", "label": "BITS", "params": { "width": 4, "splits": [1, 1, 1, 1] }, "position": { "x": 440, "y": 160 }, "rotation": 0 },
+      { "id": "div2", "type": "LED", "label": "÷2", "params": { "width": 1 }, "position": { "x": 640, "y": 20 }, "rotation": 0 },
+      { "id": "div4", "type": "LED", "label": "÷4", "params": { "width": 1 }, "position": { "x": 640, "y": 110 }, "rotation": 0 },
+      { "id": "div8", "type": "LED", "label": "÷8", "params": { "width": 1 }, "position": { "x": 640, "y": 200 }, "rotation": 0 },
+      { "id": "div16", "type": "LED", "label": "÷16", "params": { "width": 1 }, "position": { "x": 640, "y": 290 }, "rotation": 0 }
+    ],
+    "nets": [
+      { "id": "n1", "width": 1, "pins": [{ "component": "master", "pin": "out" }, { "component": "cnt", "pin": "clk" }] },
+      { "id": "n2", "width": 1, "pins": [{ "component": "clr", "pin": "out" }, { "component": "cnt", "pin": "clr" }] },
+      { "id": "n3", "width": 4, "pins": [{ "component": "cnt", "pin": "q" }, { "component": "split", "pin": "in" }] },
+      { "id": "n4", "width": 1, "pins": [{ "component": "split", "pin": "out0" }, { "component": "div2", "pin": "in" }] },
+      { "id": "n5", "width": 1, "pins": [{ "component": "split", "pin": "out1" }, { "component": "div4", "pin": "in" }] },
+      { "id": "n6", "width": 1, "pins": [{ "component": "split", "pin": "out2" }, { "component": "div8", "pin": "in" }] },
+      { "id": "n7", "width": 1, "pins": [{ "component": "split", "pin": "out3" }, { "component": "div16", "pin": "in" }] }
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "formatVersion": "1.0",
+  "circuit": {
+    "id": "johnson_sequencer",
+    "components": [
+      { "id": "clk", "type": "CLOCK", "label": "CLK", "params": { "period": 20, "width": 1, "initialValue": 0 }, "position": { "x": 40, "y": 160 }, "rotation": 0 },
+      { "id": "cnt", "type": "COUNTER", "label": "JOHNSON", "params": { "bitWidth": 4, "mode": "johnson", "hasEnable": false, "hasClear": true, "hasLoad": false }, "position": { "x": 240, "y": 160 }, "rotation": 0 },
+      { "id": "rst", "type": "PUSH_BUTTON", "label": "RST", "params": { "activeHigh": true, "width": 1, "initialValue": 0 }, "position": { "x": 40, "y": 280 }, "rotation": 0 },
+      { "id": "split", "type": "SPLITTER", "label": "OUTS", "params": { "width": 4, "splits": [1, 1, 1, 1] }, "position": { "x": 460, "y": 160 }, "rotation": 0 },
+      { "id": "o0", "type": "LED", "label": "J0", "params": { "width": 1 }, "position": { "x": 660, "y": 20 }, "rotation": 0 },
+      { "id": "o1", "type": "LED", "label": "J1", "params": { "width": 1 }, "position": { "x": 660, "y": 110 }, "rotation": 0 },
+      { "id": "o2", "type": "LED", "label": "J2", "params": { "width": 1 }, "position": { "x": 660, "y": 200 }, "rotation": 0 },
+      { "id": "o3", "type": "LED", "label": "J3", "params": { "width": 1 }, "position": { "x": 660, "y": 290 }, "rotation": 0 }
+    ],
+    "nets": [
+      { "id": "n1", "width": 1, "pins": [{ "component": "clk", "pin": "out" }, { "component": "cnt", "pin": "clk" }] },
+      { "id": "n2", "width": 1, "pins": [{ "component": "rst", "pin": "out" }, { "component": "cnt", "pin": "clr" }] },
+      { "id": "n3", "width": 4, "pins": [{ "component": "cnt", "pin": "q" }, { "component": "split", "pin": "in" }] },
+      { "id": "n4", "width": 1, "pins": [{ "component": "split", "pin": "out0" }, { "component": "o0", "pin": "in" }] },
+      { "id": "n5", "width": 1, "pins": [{ "component": "split", "pin": "out1" }, { "component": "o1", "pin": "in" }] },
+      { "id": "n6", "width": 1, "pins": [{ "component": "split", "pin": "out2" }, { "component": "o2", "pin": "in" }] },
+      { "id": "n7", "width": 1, "pins": [{ "component": "split", "pin": "out3" }, { "component": "o3", "pin": "in" }] }
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "formatVersion": "1.0",
+  "circuit": {
+    "id": "dual_osc_lfo",
+    "components": [
+      { "id": "vco", "type": "OSCILLATOR", "label": "VCO (rápido)", "params": { "period": 8, "width": 1, "initialValue": 0 }, "position": { "x": 40, "y": 80 }, "rotation": 0 },
+      { "id": "lfo", "type": "555_ASTABLE", "label": "LFO (lento)", "params": { "highTime": 40, "lowTime": 40, "width": 1, "initialValue": 0 }, "position": { "x": 40, "y": 220 }, "rotation": 0 },
+      { "id": "pwm", "type": "555_ASTABLE", "label": "PWM osc", "params": { "highTime": 6, "lowTime": 18, "width": 1, "initialValue": 0 }, "position": { "x": 40, "y": 360 }, "rotation": 0 },
+      { "id": "vco_led", "type": "LED", "label": "VCO", "params": { "width": 1 }, "position": { "x": 360, "y": 80 }, "rotation": 0 },
+      { "id": "lfo_led", "type": "LED", "label": "LFO", "params": { "width": 1 }, "position": { "x": 360, "y": 220 }, "rotation": 0 },
+      { "id": "pwm_led", "type": "LED", "label": "PWM", "params": { "width": 1 }, "position": { "x": 360, "y": 360 }, "rotation": 0 }
+    ],
+    "nets": [
+      { "id": "n1", "width": 1, "pins": [{ "component": "vco", "pin": "out" }, { "component": "vco_led", "pin": "in" }] },
+      { "id": "n2", "width": 1, "pins": [{ "component": "lfo", "pin": "out" }, { "component": "lfo_led", "pin": "in" }] },
+      { "id": "n3", "width": 1, "pins": [{ "component": "pwm", "pin": "out" }, { "component": "pwm_led", "pin": "in" }] }
+    ]
+  }
+}

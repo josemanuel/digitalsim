@@ -1,0 +1,16 @@
+{
+  "formatVersion": "1.0",
+  "circuit": {
+    "id": "trigger_to_gate",
+    "components": [
+      { "id": "gate_gen", "type": "555_MONOSTABLE", "label": "GATE (mono)", "params": { "pulseWidth": 30, "width": 1, "initialValue": 0 }, "position": { "x": 80, "y": 120 }, "rotation": 0 },
+      { "id": "gate_led", "type": "LED", "label": "GATE OUT", "params": { "width": 1 }, "position": { "x": 360, "y": 120 }, "rotation": 0 },
+      { "id": "clk", "type": "CLOCK", "label": "LFO ref", "params": { "period": 40, "width": 1, "initialValue": 0 }, "position": { "x": 80, "y": 280 }, "rotation": 0 },
+      { "id": "clk_led", "type": "LED", "label": "LFO", "params": { "width": 1 }, "position": { "x": 360, "y": 280 }, "rotation": 0 }
+    ],
+    "nets": [
+      { "id": "n1", "width": 1, "pins": [{ "component": "gate_gen", "pin": "out" }, { "component": "gate_led", "pin": "in" }] },
+      { "id": "n2", "width": 1, "pins": [{ "component": "clk", "pin": "out" }, { "component": "clk_led", "pin": "in" }] }
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "formatVersion": "1.0",
+  "circuit": {
+    "id": "arpeggiator_4",
+    "components": [
+      { "id": "clk", "type": "CLOCK", "label": "ARP RATE", "params": { "period": 20, "width": 1, "initialValue": 0 }, "position": { "x": 40, "y": 200 }, "rotation": 0 },
+      { "id": "n0", "type": "CONSTANT", "label": "N0=0", "params": { "width": 4, "value": 0 }, "position": { "x": 40, "y": 20 }, "rotation": 0 },
+      { "id": "n1", "type": "CONSTANT", "label": "N1=4", "params": { "width": 4, "value": 4 }, "position": { "x": 40, "y": 90 }, "rotation": 0 },
+      { "id": "n2", "type": "CONSTANT", "label": "N2=7", "params": { "width": 4, "value": 7 }, "position": { "x": 40, "y": 280 }, "rotation": 0 },
+      { "id": "n3", "type": "CONSTANT", "label": "N3=12", "params": { "width": 4, "value": 12 }, "position": { "x": 40, "y": 360 }, "rotation": 0 },
+      { "id": "cnt", "type": "COUNTER", "label": "STEP", "params": { "bitWidth": 2, "mode": "up", "hasEnable": false, "hasClear": false, "hasLoad": false }, "position": { "x": 240, "y": 200 }, "rotation": 0 },
+      { "id": "mux", "type": "MULTIPLEXER", "label": "ARP MUX", "params": { "selWidth": 2, "dataWidth": 4 }, "position": { "x": 440, "y": 160 }, "rotation": 0 },
+      { "id": "hex", "type": "HEX_MONITOR", "label": "NOTE", "params": { "width": 4, "format": "hex" }, "position": { "x": 680, "y": 100 }, "rotation": 0 },
+      { "id": "seg", "type": "SEVEN_SEGMENT_DISPLAY", "label": "NOTE", "params": {}, "position": { "x": 680, "y": 220 }, "rotation": 0 }
+    ],
+    "nets": [
+      { "id": "n1", "width": 1, "pins": [{ "component": "clk", "pin": "out" }, { "component": "cnt", "pin": "clk" }] },
+      { "id": "n2", "width": 2, "pins": [{ "component": "cnt", "pin": "q" }, { "component": "mux", "pin": "sel" }] },
+      { "id": "n3", "width": 4, "pins": [{ "component": "n0", "pin": "out" }, { "component": "mux", "pin": "d0" }] },
+      { "id": "n4", "width": 4, "pins": [{ "component": "n1", "pin": "out" }, { "component": "mux", "pin": "d1" }] },
+      { "id": "n5", "width": 4, "pins": [{ "component": "n2", "pin": "out" }, { "component": "mux", "pin": "d2" }] },
+      { "id": "n6", "width": 4, "pins": [{ "component": "n3", "pin": "out" }, { "component": "mux", "pin": "d3" }] },
+      { "id": "n7", "width": 4, "pins": [{ "component": "mux", "pin": "out" }, { "component": "hex", "pin": "in" }, { "component": "seg", "pin": "value" }] }
+    ]
+  }
+}

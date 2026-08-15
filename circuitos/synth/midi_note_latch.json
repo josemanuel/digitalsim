@@ -1,0 +1,28 @@
+{
+  "formatVersion": "1.0",
+  "circuit": {
+    "id": "midi_note_latch",
+    "components": [
+      { "id": "note", "type": "DIP_SWITCH", "label": "NOTE (7bit)", "params": { "width": 7, "initialValue": 60 }, "position": { "x": 40, "y": 40 }, "rotation": 0 },
+      { "id": "vel", "type": "DIP_SWITCH", "label": "VEL (4bit)", "params": { "width": 4, "initialValue": 10 }, "position": { "x": 40, "y": 180 }, "rotation": 0 },
+      { "id": "note_on", "type": "PUSH_BUTTON", "label": "NOTE ON", "params": { "activeHigh": true, "width": 1, "initialValue": 0 }, "position": { "x": 40, "y": 300 }, "rotation": 0 },
+      { "id": "gate_sw", "type": "SWITCH", "label": "GATE hold", "params": { "width": 1, "initialValue": 0 }, "position": { "x": 40, "y": 400 }, "rotation": 0 },
+      { "id": "note_reg", "type": "REGISTER", "label": "NOTE REG", "params": { "nextState": "D", "bitWidth": 7, "edge": "rising", "hasEnable": true, "hasPreset": false, "hasClear": false }, "position": { "x": 320, "y": 60 }, "rotation": 0 },
+      { "id": "vel_reg", "type": "REGISTER", "label": "VEL REG", "params": { "nextState": "D", "bitWidth": 4, "edge": "rising", "hasEnable": true, "hasPreset": false, "hasClear": false }, "position": { "x": 320, "y": 240 }, "rotation": 0 },
+      { "id": "vcc", "type": "HIGH_LOW", "label": "EN=1", "params": { "level": 1, "width": 1, "initialValue": 1 }, "position": { "x": 180, "y": 360 }, "rotation": 0 },
+      { "id": "note_hex", "type": "HEX_MONITOR", "label": "NOTE", "params": { "width": 7, "format": "hex" }, "position": { "x": 560, "y": 40 }, "rotation": 0 },
+      { "id": "note_bin", "type": "BINARY_MONITOR", "label": "NOTE bin", "params": { "width": 7, "format": "binary" }, "position": { "x": 560, "y": 130 }, "rotation": 0 },
+      { "id": "vel_hex", "type": "HEX_MONITOR", "label": "VEL", "params": { "width": 4, "format": "hex" }, "position": { "x": 560, "y": 240 }, "rotation": 0 },
+      { "id": "gate_led", "type": "LED", "label": "GATE", "params": { "width": 1 }, "position": { "x": 560, "y": 360 }, "rotation": 0 }
+    ],
+    "nets": [
+      { "id": "n1", "width": 7, "pins": [{ "component": "note", "pin": "out" }, { "component": "note_reg", "pin": "d" }] },
+      { "id": "n2", "width": 4, "pins": [{ "component": "vel", "pin": "out" }, { "component": "vel_reg", "pin": "d" }] },
+      { "id": "n3", "width": 1, "pins": [{ "component": "note_on", "pin": "out" }, { "component": "note_reg", "pin": "clk" }, { "component": "vel_reg", "pin": "clk" }] },
+      { "id": "n4", "width": 1, "pins": [{ "component": "vcc", "pin": "out" }, { "component": "note_reg", "pin": "en" }, { "component": "vel_reg", "pin": "en" }] },
+      { "id": "n5", "width": 7, "pins": [{ "component": "note_reg", "pin": "q" }, { "component": "note_hex", "pin": "in" }, { "component": "note_bin", "pin": "in" }] },
+      { "id": "n6", "width": 4, "pins": [{ "component": "vel_reg", "pin": "q" }, { "component": "vel_hex", "pin": "in" }] },
+      { "id": "n7", "width": 1, "pins": [{ "component": "gate_sw", "pin": "out" }, { "component": "gate_led", "pin": "in" }] }
+    ]
+  }
+}
