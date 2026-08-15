@@ -1,0 +1,767 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ayuda y documentación — Simulador de Lógica Digital</title>
+<style>
+  :root {
+    --bg: #0a0f0d;
+    --panel: #101613;
+    --panel-border: #223028;
+    --grid-line: rgba(120, 160, 140, 0.05);
+    --text: #d8e2dc;
+    --text-muted: #6f8279;
+    --accent-green: #2ecc71;
+    --accent-amber: #e6b800;
+    --accent-blue: #6b7fd7;
+    --mono: 'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    line-height: 1.65;
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 28px 24px 64px;
+  }
+
+  header {
+    margin-bottom: 28px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--panel-border);
+  }
+
+  header h1 {
+    font-size: 22px;
+    font-weight: 600;
+    margin: 0 0 6px;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+
+  header p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+
+  nav.toc {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin-bottom: 32px;
+  }
+
+  nav.toc h2 {
+    margin: 0 0 10px;
+    font-size: 13px;
+    color: var(--accent-green);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  nav.toc ol {
+    margin: 0;
+    padding-left: 22px;
+    columns: 1;
+  }
+
+  nav.toc li {
+    margin-bottom: 4px;
+    font-size: 13px;
+  }
+
+  nav.toc a {
+    color: var(--accent-blue);
+    text-decoration: none;
+  }
+
+  nav.toc a:hover {
+    color: #93a3ea;
+    text-decoration: underline;
+  }
+
+  section {
+    margin-bottom: 36px;
+  }
+
+  h2 {
+    font-size: 17px;
+    font-weight: 600;
+    margin: 0 0 14px;
+    color: var(--accent-green);
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--panel-border);
+  }
+
+  h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 22px 0 8px;
+    color: var(--accent-blue);
+  }
+
+  p, li {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  p {
+    margin: 0 0 12px;
+  }
+
+  ul, ol {
+    margin: 0 0 14px;
+    padding-left: 22px;
+  }
+
+  li {
+    margin-bottom: 5px;
+  }
+
+  strong, b {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  code {
+    font-family: var(--mono);
+    background: #16201b;
+    border: 1px solid #2c4034;
+    border-radius: 3px;
+    padding: 1px 5px;
+    font-size: 12px;
+    color: var(--accent-amber);
+  }
+
+  kbd {
+    font-family: var(--mono);
+    background: #16201b;
+    border: 1px solid #2c4034;
+    border-bottom-width: 2px;
+    border-radius: 3px;
+    padding: 1px 6px;
+    font-size: 11px;
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 0 16px;
+    font-size: 12px;
+  }
+
+  th, td {
+    border: 1px solid var(--panel-border);
+    padding: 8px 10px;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    background: #0d1411;
+    color: var(--accent-green);
+    font-weight: 600;
+  }
+
+  td {
+    color: var(--text-muted);
+  }
+
+  td:first-child {
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  .callout {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-left: 3px solid var(--accent-green);
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin: 14px 0;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .callout.warn {
+    border-left-color: var(--accent-amber);
+  }
+
+  .callout strong {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--text);
+  }
+
+  .step {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 6px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+
+  .step .num {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    line-height: 22px;
+    text-align: center;
+    background: #16201b;
+    border: 1px solid #2c4034;
+    border-radius: 50%;
+    color: var(--accent-green);
+    font-size: 12px;
+    font-weight: 600;
+    margin-right: 8px;
+  }
+
+  .step p {
+    margin: 6px 0 0;
+  }
+
+  .cat-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 8px;
+    margin: 12px 0 16px;
+  }
+
+  .cat-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 4px;
+    padding: 8px 10px;
+    font-size: 12px;
+    color: var(--text);
+  }
+
+  .cat-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex: 0 0 auto;
+  }
+
+  footer {
+    margin-top: 48px;
+    padding-top: 18px;
+    border-top: 1px solid var(--panel-border);
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  a.back {
+    display: inline-block;
+    margin-bottom: 18px;
+    color: var(--accent-blue);
+    text-decoration: none;
+    font-size: 13px;
+  }
+
+  a.back:hover {
+    color: #93a3ea;
+    text-decoration: underline;
+  }
+
+  @media (max-width: 600px) {
+    .page { padding: 20px 14px 48px; }
+    nav.toc ol { columns: 1; }
+    table { font-size: 11px; }
+    td:first-child { white-space: normal; }
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <a class="back" href="index.html">← Volver al editor</a>
+
+    <header>
+      <h1>Ayuda y documentación</h1>
+      <p>Simulador de Lógica Digital — tutorial, referencia de uso y conceptos básicos.</p>
+    </header>
+
+    <nav class="toc">
+      <h2>Índice</h2>
+      <ol>
+        <li><a href="#que-es">Qué es este programa</a></li>
+        <li><a href="#primeros-pasos">Primeros pasos (tutorial rápido)</a></li>
+        <li><a href="#interfaz">La interfaz</a></li>
+        <li><a href="#componentes">Componentes y paleta</a></li>
+        <li><a href="#cablear">Cablear y editar</a></li>
+        <li><a href="#seleccion">Selección, copiar, rotar y redimensionar</a></li>
+        <li><a href="#simulacion">Simulación e interacción</a></li>
+        <li><a href="#guardar">Guardar, cargar y ejemplos</a></li>
+        <li><a href="#atajos">Atajos de teclado</a></li>
+        <li><a href="#tactil">Uso en móvil / táctil</a></li>
+        <li><a href="#senales">Señales: 0, 1, X y Z</a></li>
+        <li><a href="#limitaciones">Limitaciones conocidas</a></li>
+        <li><a href="#acerca">Acerca de</a></li>
+      </ol>
+    </nav>
+
+    <!-- ============================================================ -->
+    <section id="que-es">
+      <h2>1. Qué es este programa</h2>
+      <p>
+        Un <strong>editor visual interactivo</strong> de circuitos de lógica digital
+        construido sobre un motor de simulación de eventos discretos. No es una
+        demostración de una librería: es el producto completo. Puedes diseñar
+        circuitos, cablearlos, simularlos paso a paso o en continuo, y guardar
+        o cargar el resultado como JSON.
+      </p>
+      <p>
+        Incluye <strong>87 tipos de componentes</strong> en 15 categorías: desde
+        puertas lógicas básicas hasta una CPU de 4 bits funcional, pasando por
+        memoria, contadores, familia TTL 74xx, instrumentación y más.
+      </p>
+      <div class="callout">
+        <strong>Sin dependencias en el núcleo</strong>
+        El motor de simulación, los componentes y la capa de comandos
+        (deshacer/rehacer) están escritos en JavaScript vanilla. La única
+        dependencia externa del proyecto es esbuild, usada solo en tiempo de
+        construcción del HTML autocontenido.
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <section id="primeros-pasos">
+      <h2>2. Primeros pasos (tutorial rápido)</h2>
+      <p>En cinco minutos puedes tener un medio sumador funcionando:</p>
+
+      <div class="step">
+        <span class="num">1</span> <strong>Carga un ejemplo</strong>
+        <p>
+          Menú <strong>Archivo → Ejemplos…</strong> y elige «Medio sumador».
+          Se carga un circuito con dos interruptores (A y B), una puerta XOR
+          (suma), una AND (acarreo) y dos LEDs.
+        </p>
+      </div>
+
+      <div class="step">
+        <span class="num">2</span> <strong>Acciona los interruptores</strong>
+        <p>
+          Haz clic en el interruptor A (o B). En el panel de la derecha
+          aparece la sección <strong>Acciones</strong> con un botón
+          «Alternar». Púlsalo. El valor del interruptor cambia.
+        </p>
+      </div>
+
+      <div class="step">
+        <span class="num">3</span> <strong>Avanza la simulación</strong>
+        <p>
+          Menú <strong>Ejecutar → Un paso</strong> (o varias veces). Las
+          señales se propagan por las puertas hasta los LEDs. También puedes
+          usar <strong>Ejecutar</strong> para que avance solo cada ~60 ms.
+        </p>
+      </div>
+
+      <div class="step">
+        <span class="num">4</span> <strong>Prueba combinaciones</strong>
+        <p>
+          Alterna A y B (00, 01, 10, 11) y observa SUM y CARRY. Es la tabla
+          de verdad de un medio sumador.
+        </p>
+      </div>
+
+      <div class="step">
+        <span class="num">5</span> <strong>Modifica el circuito</strong>
+        <p>
+          Arrastra componentes desde la paleta (izquierda), cablea haciendo
+          clic en un pin y luego en otro, borra con <kbd>Delete</kbd>,
+          deshaz con <kbd>Ctrl</kbd>+<kbd>Z</kbd>. Todo es editable.
+        </p>
+      </div>
+
+      <div class="callout">
+        <strong>Otros ejemplos</strong>
+        «Contador de 4 bits»: arranca el reloj desde sus Acciones y pulsa
+        Ejecutar. «CPU sencilla»: pulsa CLR y luego CLK varias veces desde
+        los pulsadores; ejecuta un programa real (LDA, ADD, STA, HLT).
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <section id="interfaz">
+      <h2>3. La interfaz</h2>
+      <p>La pantalla tiene cuatro zonas principales:</p>
+      <ul>
+        <li>
+          <strong>Barra de menús</strong> (arriba): Archivo, Editar, Ejecutar
+          e Info. Cada uno se abre al pulsar; solo uno permanece abierto a la
+          vez.
+        </li>
+        <li>
+          <strong>Paleta</strong> (izquierda): árbol de las 15 categorías de
+          componentes. Cada categoría tiene un color y se pliega/despliega
+          de forma independiente.
+        </li>
+        <li>
+          <strong>Lienzo</strong> (centro): el esquema del circuito. Aquí
+          arrastras, cableas, seleccionas y navegas (zoom/pan).
+        </li>
+        <li>
+          <strong>Panel de propiedades</strong> (derecha): muestra el tipo e
+          id del componente seleccionado, sus parámetros editables y, si las
+          tiene, sus Acciones interactivas.
+        </li>
+      </ul>
+      <p>
+        Debajo del panel de propiedades hay una leyenda rápida:
+        <strong style="color:#2ecc71">verde</strong> = señal activa (1),
+        <strong style="color:#e6b800">ámbar</strong> = desconocida (X).
+      </p>
+    </section>
+
+    <!-- ============================================================ -->
+    <section id="componentes">
+      <h2>4. Componentes y paleta</h2>
+      <p>
+        La paleta lista las 15 categorías reales del registro de componentes.
+        Haz clic en una cabecera para desplegar o plegar sus tipos. Un clic
+        en un tipo lo añade al circuito en una posición libre.
+      </p>
+
+      <div class="cat-list">
+        <div class="cat-item"><span class="cat-dot" style="background:#2ecc71"></span> Puertas lógicas</div>
+        <div class="cat-item"><span class="cat-dot" style="background:#3498db"></span> Secuenciales</div>
+        <div class="cat-item"><span class="cat-dot" style="background:#9b59b6"></span> Combinacionales</div>
+        <div class="cat-item"><span class="cat-dot" style="background:#e67e22"></span> Aritmética</div>
+        <div class="cat-item"><span class="cat-dot" style="background:#1abc9c"></span> Bus</div>
+        <div class="cat-item"><span class="cat-dot" style="background:#e74c3c"></span> Entradas</div>
+        <div class="cat-item"><span class="cat-dot" style="background:#f1c40f"></span> Memoria</div>
+        <div class="cat-item"><span class="cat-dot" style="background:#00cec9"></span> Contadores</div>
+        <div class="cat-item"><span class="cat-dot" style="background:#e84393"></span> Salidas / displays</div>
+        <div class="cat-item"><span class="cat-dot" style="background:#74b9ff"></span> Instrumentación educativa</div>
+        <div class="cat-item"><span class="cat-dot" style="background:#a29bfe"></span> Programables</div>
+        <div class="cat-item"><span class="cat-dot" style="background:#fd79a8"></span> Instrumentación</div>
+        <div class="cat-item"><span class="cat-dot" style="background:#fdcb6e"></span> Familia TTL 74xx</div>
+        <div class="cat-item"><span class="cat-dot" style="background:#55efc4"></span> Alto nivel</div>
+        <div class="cat-item"><span class="cat-dot" style="background:#81ecec"></span> Subcircuitos</div>
+      </div>
+
+      <h3>Parámetros</h3>
+      <p>
+        Al seleccionar un componente, el panel derecho muestra sus
+        parámetros (ancho de bits, número de entradas, flanco de reloj,
+        etc.). Cámbialos y el componente se actualiza al instante. Los
+        cambios pasan por el historial de deshacer/rehacer.
+      </p>
+
+      <h3>Acciones interactivas</h3>
+      <p>
+        Algunos componentes de entrada exponen acciones en vivo (no son
+        ediciones del diseño, sino interacción de simulación):
+      </p>
+      <ul>
+        <li><strong>Interruptor (SWITCH)</strong> — Alternar</li>
+        <li><strong>Pulsador (PUSH_BUTTON)</strong> — Pulsar / Soltar</li>
+        <li><strong>Reloj (CLOCK) y osciladores</strong> — Arrancar / Parar</li>
+        <li><strong>DIP switch</strong> — Alternar por bit</li>
+        <li><strong>Generador de pulsos / 555 monoestable</strong> — Disparar</li>
+        <li><strong>555 astable</strong> — Arrancar / Parar</li>
+      </ul>
+      <p>
+        Tras una acción, usa «Un paso» o «Ejecutar» para propagar el cambio.
+        Las acciones no se deshacen con Ctrl+Z (igual que avanzar la
+        simulación).
+      </p>
+    </section>
+
+    <!-- ============================================================ -->
+    <section id="cablear">
+      <h2>5. Cablear y editar</h2>
+
+      <h3>Conectar pines</h3>
+      <ol>
+        <li>Haz clic en un pin de salida (o entrada).</li>
+        <li>Mueve el cursor: verás una vista previa del cable en ángulo recto (Manhattan).</li>
+        <li>Haz clic en el pin de destino. Si los anchos coinciden y la conexión es válida, el cable queda fijo.</li>
+      </ol>
+      <p>
+        Para <strong>cancelar</strong> un cable a medio hacer: clic en el
+        mismo pin otra vez, clic en un espacio vacío del lienzo, o
+        <kbd>Escape</kbd>.
+      </p>
+
+      <div class="callout warn">
+        <strong>Anchos de bit</strong>
+        Solo se pueden conectar pines del mismo ancho. Si intentas unir un
+        pin de 1 bit con uno de 4, la conexión se rechaza y verás el error
+        en la barra de estado.
+      </div>
+
+      <h3>Mover componentes</h3>
+      <p>
+        Arrastra un componente por su caja. La primera vez que lo mueves a
+        mano deja de participar en el auto-layout; su posición pasa a ser
+        manual y se conserva al guardar.
+      </p>
+
+      <h3>Zoom y pan</h3>
+      <ul>
+        <li><strong>Rueda del ratón</strong>: zoom centrado en el cursor (0,2× – 4×).</li>
+        <li><strong>Arrastrar sobre fondo vacío</strong>: desplazar la vista (pan).</li>
+        <li><strong>Centrar vista</strong> (menú Editar): vuelve al origen con zoom 1×. También se aplica al crear un circuito nuevo o cargar uno.</li>
+      </ul>
+    </section>
+
+    <!-- ============================================================ -->
+    <section id="seleccion">
+      <h2>6. Selección, copiar, rotar y redimensionar</h2>
+
+      <h3>Selección</h3>
+      <ul>
+        <li><strong>Clic</strong> en un componente: selección única.</li>
+        <li><strong>Shift+clic</strong>: añade o quita de la selección sin tocar el resto.</li>
+        <li><strong>Shift+arrastre sobre fondo</strong>: selección por rectángulo (unión con la selección actual).</li>
+        <li><strong>Ctrl+A</strong>: selecciona todos los componentes.</li>
+        <li>Clic en fondo vacío: deselecciona todo (y cancela un cable a medio hacer).</li>
+      </ul>
+      <p>
+        Con varios seleccionados, el contorno azul aparece en cada uno.
+        Rotar, copiar y borrar afectan a <em>toda</em> la selección (un solo
+        paso de deshacer). Parámetros y Acciones del panel derecho siguen
+        siendo del último componente tocado.
+      </p>
+
+      <h3>Copiar y pegar</h3>
+      <p>
+        <kbd>Ctrl</kbd>+<kbd>C</kbd> copia un snapshot del diseño (tipo,
+        parámetros, etiqueta, rotación, tamaño, posición relativa). No copia
+        el estado de simulación ni las conexiones: la copia nace
+        desconectada y «en blanco». <kbd>Ctrl</kbd>+<kbd>V</kbd> pega con un
+        desplazamiento en cascada para que no queden apiladas.
+      </p>
+
+      <h3>Rotar</h3>
+      <p>
+        <kbd>R</kbd> o el botón «Rotar 90°» giran la selección 90° en sentido
+        horario. Los pines y el símbolo rotan juntos; el enrutado de cables
+        respeta la nueva orientación de cada pin.
+      </p>
+
+      <h3>Redimensionar</h3>
+      <p>
+        Con un único componente seleccionado aparece un asa (cuadradito) en
+        la esquina inferior derecha del contorno. Arrástrala para cambiar el
+        tamaño de la caja. Nunca se puede reducir por debajo del mínimo que
+        necesitan sus pines.
+      </p>
+
+      <h3>Borrar</h3>
+      <p>
+        <kbd>Delete</kbd> o <kbd>Backspace</kbd> eliminan la selección
+        completa (componentes y sus conexiones). Deshacible.
+      </p>
+    </section>
+
+    <!-- ============================================================ -->
+    <section id="simulacion">
+      <h2>7. Simulación e interacción</h2>
+      <p>
+        El motor es de <strong>eventos discretos</strong>: cada cambio de
+        señal se programa con un retardo de propagación (por defecto 1
+        unidad de tiempo de simulación) y se aplica cuando llega su turno.
+      </p>
+      <ul>
+        <li>
+          <strong>Un paso</strong>: procesa el siguiente evento (o grupo de
+          eventos en el mismo instante) y redibuja.
+        </li>
+        <li>
+          <strong>Ejecutar / Pausar</strong>: avanza automáticamente cada
+          ~60 ms hasta que lo pares.
+        </li>
+      </ul>
+      <p>
+        Los relojes y osciladores se <strong>auto-programan</strong>: al
+        arrancarlos desde Acciones, programan su próximo flanco sin que el
+        motor sepa qué es un reloj.
+      </p>
+      <div class="callout">
+        <strong>Bucles combinacionales</strong>
+        El motor detecta ciclos combinacionales (sin elementos de memoria que
+        los rompan). Si tu circuito tiene realimentación pura sin flip-flops
+        ni registros, la simulación lo reportará; no «adivina» un valor
+        estable.
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <section id="guardar">
+      <h2>8. Guardar, cargar y ejemplos</h2>
+      <ul>
+        <li>
+          <strong>Guardar (.json)</strong>: descarga el circuito serializado
+          (componentes, posiciones, rotaciones, tamaños, redes y estado
+          interno de los componentes con memoria).
+        </li>
+        <li>
+          <strong>Cargar (.json)</strong>: abre un archivo guardado
+          previamente. Las posiciones se tratan como manuales.
+        </li>
+        <li>
+          <strong>Nuevo</strong>: circuito vacío. Si el actual tiene
+          contenido, pide confirmación.
+        </li>
+        <li>
+          <strong>Ejemplos</strong>: medio sumador, contador de 4 bits y CPU
+          sencilla. Se cargan con el mismo mecanismo que un JSON propio;
+          puedes editarlos libremente.
+        </li>
+      </ul>
+      <div class="callout warn">
+        <strong>Estado de simulación</strong>
+        Al guardar se incluye el estado interno (contenido de RAM, valor de
+        registros, etc.). Al cargar, el circuito reaparece en el punto en el
+        que se guardó, no necesariamente en el estado inicial de «fábrica».
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <section id="atajos">
+      <h2>9. Atajos de teclado</h2>
+      <p>
+        Los atajos se ignoran si el foco está en un campo de texto
+        (<code>&lt;input&gt;</code> / <code>&lt;textarea&gt;</code>), para no
+        interferir con la edición de parámetros.
+      </p>
+      <table>
+        <thead>
+          <tr><th>Atajo</th><th>Acción</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><kbd>Ctrl</kbd>+<kbd>Z</kbd></td><td>Deshacer</td></tr>
+          <tr><td><kbd>Ctrl</kbd>+<kbd>Y</kbd></td><td>Rehacer</td></tr>
+          <tr><td><kbd>Ctrl</kbd>+<kbd>C</kbd></td><td>Copiar selección</td></tr>
+          <tr><td><kbd>Ctrl</kbd>+<kbd>V</kbd></td><td>Pegar</td></tr>
+          <tr><td><kbd>Ctrl</kbd>+<kbd>A</kbd></td><td>Seleccionar todos</td></tr>
+          <tr><td><kbd>R</kbd></td><td>Rotar 90° la selección</td></tr>
+          <tr><td><kbd>Delete</kbd> / <kbd>Backspace</kbd></td><td>Borrar selección</td></tr>
+          <tr><td><kbd>Escape</kbd></td><td>Cancelar cable a medio hacer</td></tr>
+        </tbody>
+      </table>
+      <p>
+        En macOS, <kbd>Cmd</kbd> funciona igual que <kbd>Ctrl</kbd> en todos
+        los atajos anteriores.
+      </p>
+    </section>
+
+    <!-- ============================================================ -->
+    <section id="tactil">
+      <h2>10. Uso en móvil / táctil</h2>
+      <p>
+        El lienzo tiene <code>touch-action: none</code> para que el navegador
+        no se reserve los gestos para scroll de página. La app traduce
+        toques a la misma lógica que el ratón:
+      </p>
+      <ul>
+        <li><strong>Un dedo</strong>: arrastrar componentes, cablear, panear, redimensionar, selección por rectángulo (con Shift si el teclado está disponible).</li>
+        <li><strong>Dos dedos (pellizco)</strong>: zoom, manteniendo fijo el punto de mundo bajo el centro del gesto.</li>
+      </ul>
+      <p>
+        En pantallas estrechas (&lt; 700 px) el layout pasa a columna: paleta
+        arriba, lienzo en medio, propiedades abajo. Los menús siguen siendo
+        los mismos (Archivo / Editar / Ejecutar / Info).
+      </p>
+    </section>
+
+    <!-- ============================================================ -->
+    <section id="senales">
+      <h2>11. Señales: 0, 1, X y Z</h2>
+      <p>
+        Cada bit de una señal puede estar en uno de cuatro estados. El
+        simulador <strong>nunca adivina</strong> un valor:
+      </p>
+      <table>
+        <thead>
+          <tr><th>Estado</th><th>Significado</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>0</code></td><td>Nivel bajo (falso / tierra lógica).</td></tr>
+          <tr><td><code>1</code></td><td>Nivel alto (verdadero / Vcc lógica).</td></tr>
+          <tr><td><code>X</code></td><td>Desconocido o conflicto. Entrada flotante, selector indefinido, ALU con opcode en X, etc.</td></tr>
+          <tr><td><code>Z</code></td><td>Alta impedancia: nadie está conduciendo la línea (p. ej. buffer triestado deshabilitado).</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Una entrada sin conectar se lee como <code>X</code>, no como 0. Eso
+        evita ocultar errores reales de diseño (pines olvidados).
+      </p>
+    </section>
+
+    <!-- ============================================================ -->
+    <section id="limitaciones">
+      <h2>12. Limitaciones conocidas</h2>
+      <ul>
+        <li>
+          <strong>Enrutado de cables</strong>: Manhattan simple (salida en
+          la dirección del pin + codo de 3 tramos). No evita colisiones con
+          otros componentes ni con otros cables.
+        </li>
+        <li>
+          <strong>Rotación</strong>: el comando está pensado para múltiplos
+          de 90°. No hay badge visual de «rotado N°» más allá del dibujo
+          girado.
+        </li>
+        <li>
+          <strong>Bus triestado con arbitraje real</strong> y modo de clear
+          síncrono en contadores son mejoras posibles documentadas, no
+          urgentes.
+        </li>
+        <li>
+          <strong>Documentación de cada tipo</strong>: esta página describe
+          el uso del editor; el comportamiento detallado de cada uno de los
+          87 tipos vive en el código y en los tests automatizados.
+        </li>
+      </ul>
+    </section>
+
+    <!-- ============================================================ -->
+    <section id="acerca">
+      <h2>13. Acerca de</h2>
+      <p>
+        Simulador de lógica digital: editor visual interactivo sobre un
+        motor de eventos discretos escrito desde cero, sin dependencias
+        externas en el núcleo. 87 tipos de componentes, deshacer/rehacer,
+        guardar/cargar como JSON, y una biblioteca cubierta por cientos de
+        tests automatizados.
+      </p>
+      <p>
+        Autor: <strong>José Manuel Fernández Carreira</strong>
+      </p>
+    </section>
+
+    <footer>
+      Simulador de Lógica Digital · Documentación de uso ·
+      <a href="index.html" style="color:var(--accent-blue)">Volver al editor</a>
+    </footer>
+  </div>
+</body>
+</html>
