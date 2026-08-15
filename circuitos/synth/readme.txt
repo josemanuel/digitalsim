@@ -1,4 +1,4 @@
-jemplos «síntesis / modular / MIDI» (lógica digital)
+Ejemplos «síntesis / modular / MIDI» (lógica digital)
 ====================================================
 
 Estos circuitos modelan bloques típicos de sintetizadores y modular
