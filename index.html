@@ -6,15 +6,18 @@
 <title>Simulador de Lógica Digital</title>
 <style>
   :root {
-    --bg: #0a0f0d;
-    --panel: #101613;
-    --panel-border: #223028;
-    --grid-line: rgba(120, 160, 140, 0.05);
-    --text: #d8e2dc;
-    --text-muted: #6f8279;
-    --accent-green: #2ecc71;
-    --accent-amber: #e6b800;
-    --accent-blue: #6b7fd7;
+    /* Paleta "brillante" (inspirada en Every Circuit): negro casi puro de
+       fondo, pero acentos y texto mucho más luminosos que la paleta apagada
+       anterior, para mejorar la legibilidad general de la app. */
+    --bg: #060907;
+    --panel: #121a16;
+    --panel-border: #33513f;
+    --grid-line: rgba(140, 190, 160, 0.06);
+    --text: #f1f8f3;
+    --text-muted: #9fb6a9;
+    --accent-green: #39ff6a;
+    --accent-amber: #ffd400;
+    --accent-blue: #7c93ff;
     --mono: 'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   }
 
@@ -23,6 +26,7 @@
   html, body {
     margin: 0;
     padding: 0;
+    height: 100%;
     background: var(--bg);
     color: var(--text);
     font-family: var(--mono);
@@ -30,24 +34,20 @@
       linear-gradient(var(--grid-line) 1px, transparent 1px),
       linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
     background-size: 24px 24px;
+    overflow: hidden; /* el lienzo ocupa toda la ventana; no hace falta scroll de página en escritorio */
   }
 
+  /* Fase 1.1/1.2/1.3: sin título ni cabecera propios, el menú es el
+     elemento más superior de la app, y el conjunto ocupa el 100% de la
+     altura de la ventana — el lienzo central se lleva todo el espacio que
+     antes quedaba sin aprovechar. */
   .page {
+    height: 100vh;
     max-width: 1800px;
     margin: 0 auto;
-    padding: 20px 24px 32px;
-  }
-
-  header {
-    margin-bottom: 20px;
-  }
-
-  h1 {
-    font-size: 20px;
-    font-weight: 600;
-    margin: 0;
-    color: var(--text);
-    letter-spacing: -0.01em;
+    padding: 8px 12px;
+    display: flex;
+    flex-direction: column;
   }
 
   .panel {
@@ -59,10 +59,10 @@
 
   .ctrl-btn {
     font-family: var(--mono);
-    background: #16201b;
+    background: #17241d;
     color: var(--text);
-    border: 1px solid #2c4034;
-    border-bottom: 3px solid #2c4034;
+    border: 1px solid #375246;
+    border-bottom: 3px solid #375246;
     border-radius: 4px;
     padding: 10px 16px;
     font-size: 12px;
@@ -74,7 +74,7 @@
 
   .ctrl-btn:hover {
     color: var(--accent-green);
-    border-color: #3a5a48;
+    border-color: #4d7a5f;
   }
 
   .ctrl-btn:active {
@@ -105,20 +105,12 @@
   }
 
 
-  .examples-select {
-    font-family: var(--mono);
-    background: #16201b;
-    color: var(--text);
-    border: 1px solid #2c4034;
-    border-radius: 4px;
-    padding: 8px 10px;
-    font-size: 12px;
-  }
-
   .editor-layout {
     display: flex;
     gap: 14px;
-    align-items: flex-start;
+    align-items: stretch;
+    flex: 1 1 auto;
+    min-height: 0; /* imprescindible para que los hijos flex con scroll/alto 100% no se desborden */
   }
 
   .palette-col, .props-col {
@@ -126,6 +118,8 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
+    height: 100%;
+    min-height: 0;
   }
 
   /* Árbol de categorías de la paleta: todas las categorías siempre
@@ -136,7 +130,8 @@
   .palette-tree {
     display: flex;
     flex-direction: column;
-    max-height: 75vh;
+    flex: 1 1 auto;
+    min-height: 0;
     overflow-y: auto;
     padding-right: 2px;
   }
@@ -159,7 +154,7 @@
     font-family: var(--mono);
   }
 
-  .category-header:hover { background: rgba(255,255,255,0.05); }
+  .category-header:hover { background: rgba(255,255,255,0.06); }
 
   .category-dot {
     width: 8px;
@@ -206,19 +201,22 @@
     transition: background 0.1s ease, color 0.1s ease;
   }
 
-  .palette-btn:hover { background: rgba(255,255,255,0.07); color: var(--text); }
+  .palette-btn:hover { background: rgba(255,255,255,0.08); color: var(--text); }
 
   .canvas-col {
     flex: 1 1 auto;
     min-width: 0;
+    height: 100%;
+    min-height: 0;
   }
 
   #editor-schematic {
-    background: #121212;
+    background: #0c0f0d;
     border: 1px solid var(--panel-border);
     border-radius: 4px;
     overflow: hidden;
-    height: min(560px, 65vh);
+    height: 100%;
+    width: 100%;
     position: relative;
     cursor: crosshair;
     user-select: none;
@@ -229,10 +227,11 @@
 
   .editor-toolbar {
     display: flex;
-    gap: 8px;
-    margin-bottom: 10px;
+    gap: 4px;
+    margin-bottom: 8px;
     flex-wrap: wrap;
     position: relative;
+    flex: 0 0 auto;
   }
 
   .menu {
@@ -245,14 +244,14 @@
     color: var(--accent-blue);
     border: none;
     border-radius: 4px;
-    padding: 8px 10px;
-    font-size: 12px;
+    padding: 8px 12px;
+    font-size: 13px;
     cursor: pointer;
   }
 
   .menu-btn:hover, .menu-btn[aria-expanded="true"] {
-    background: rgba(107, 127, 215, 0.12);
-    color: #93a3ea;
+    background: rgba(124, 147, 255, 0.14);
+    color: #aebbff;
   }
 
   .menu-dropdown {
@@ -263,21 +262,54 @@
     background: var(--panel);
     border: 1px solid var(--panel-border);
     border-radius: 6px;
-    padding: 8px;
+    padding: 6px;
     flex-direction: column;
-    gap: 6px;
-    min-width: 190px;
+    gap: 0;
+    min-width: 200px;
     z-index: 50;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.55);
   }
 
   .menu-dropdown.open {
     display: flex;
   }
 
-  .menu-dropdown .ctrl-btn, .menu-dropdown .examples-select {
+  /* Fase 1.4: los elementos de un menú desplegable no deben parecer
+     botones individuales con su propio recuadro — un menú de aplicación
+     de escritorio normal es una lista plana de filas, sin más adorno que
+     el resaltado al pasar el ratón. El estilo "botón con relieve" de
+     .ctrl-btn se reserva para botones sueltos fuera de un menú (diálogos,
+     panel de Acciones). */
+  .menu-dropdown .ctrl-btn {
     width: 100%;
     text-align: left;
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    text-transform: none;
+    letter-spacing: normal;
+    font-size: 13px;
+    padding: 8px 10px;
+    transition: background 0.08s ease, color 0.08s ease;
+  }
+
+  .menu-dropdown .ctrl-btn:hover {
+    color: var(--accent-green);
+    background: rgba(255,255,255,0.07);
+  }
+
+  .menu-dropdown .ctrl-btn:active {
+    transform: none;
+  }
+
+  .menu-dropdown .ctrl-btn:disabled {
+    color: var(--text-muted);
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  .menu-dropdown .ctrl-btn:disabled:hover {
+    background: transparent;
   }
 
   #props {
@@ -288,6 +320,7 @@
     font-size: 11px;
     color: var(--text-muted);
     min-height: 80px;
+    overflow-y: auto;
   }
 
   .props-title {
@@ -304,25 +337,29 @@
 
   .props-row input {
     font-family: var(--mono);
-    background: #16201b;
+    background: #17241d;
     color: var(--text);
-    border: 1px solid #2c4034;
+    border: 1px solid #375246;
     border-radius: 3px;
     padding: 2px 6px;
     width: 70px;
   }
 
+  /* Fase 1.2: el mensaje de estado (título/descripción del circuito o
+     ejemplo cargado, errores de conexión, confirmaciones de guardado...)
+     ya no vive por encima del menú — se muestra en el sidebar derecho,
+     junto al resto de información contextual. */
   #editor-status {
     min-height: 16px;
     color: var(--accent-amber);
     font-size: 11px;
-    margin-bottom: 8px;
+    flex: 0 0 auto;
   }
 
   .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.65);
+    background: rgba(0,0,0,0.7);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -367,13 +404,112 @@
   .modal-box .ctrl-btn {
     margin-top: 16px;
   }
+
+  /* Fase 2: árbol de la Biblioteca de circuitos, dentro de su propio
+     modal. Deliberadamente con clases distintas de `.category-*` (la
+     paleta de componentes): son dos árboles con semántica distinta y no
+     conviene que compartan selector, ni siquiera aunque el aspecto visual
+     sea primo-hermano. */
+  .lib-section-title {
+    font-size: 12px;
+    color: var(--accent-blue);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: 18px 0 8px;
+  }
+
+  .lib-section-title:first-child {
+    margin-top: 0;
+  }
+
+  .lib-folder-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    user-select: none;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-family: var(--mono);
+  }
+
+  .lib-folder-header:hover { background: rgba(255,255,255,0.06); }
+
+  .lib-folder-desc {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 400;
+    margin-left: auto;
+    padding-left: 10px;
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 55%;
+  }
+
+  .lib-folder-chevron {
+    font-size: 9px;
+    color: var(--text-muted);
+    transition: transform 0.15s ease;
+    flex: 0 0 auto;
+  }
+
+  .lib-folder-chevron.open { transform: rotate(90deg); }
+
+  .lib-folder-items {
+    display: none;
+    flex-direction: column;
+    gap: 2px;
+    padding: 2px 0 8px 20px;
+  }
+
+  .lib-folder-items.open { display: flex; }
+
+  .lib-file-btn {
+    font-family: var(--mono);
+    background: transparent;
+    color: var(--text-muted);
+    border: none;
+    border-radius: 4px;
+    padding: 6px 10px;
+    font-size: 12px;
+    text-align: left;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  .lib-file-btn:hover { background: rgba(255,255,255,0.08); color: var(--accent-green); }
+
+  .lib-empty, .lib-loading, .lib-error {
+    font-size: 12px;
+    color: var(--text-muted);
+    padding: 6px 2px;
+  }
+
+  .lib-error { color: var(--accent-amber); }
   @media (max-width: 700px) {
+    html, body {
+      overflow: auto; /* en móvil el layout pasa a columna y puede superar la altura de la ventana: se permite scroll de página */
+    }
+    .page {
+      height: auto;
+      min-height: 100vh;
+    }
     .editor-layout {
       flex-direction: column;
     }
     .palette-col, .props-col {
       flex: 1 1 auto;
       width: 100%;
+      height: auto;
     }
     .palette-tree {
       max-height: 200px;
@@ -391,62 +527,54 @@
 </head>
 <body>
   <div class="page">
-    <header>
-      <h1>Simulador de Lógica Digital</h1>
-    </header>
-
-    <div class="panel" id="editor-panel">
-      <div id="editor-status"></div>
-      <div class="editor-toolbar">
-        <div class="menu">
-          <button class="menu-btn" type="button" data-menu="file" aria-expanded="false">Archivo ▾</button>
-          <div class="menu-dropdown" data-menu-panel="file">
-            <button class="ctrl-btn" id="new-btn">Nuevo</button>
-            <button class="ctrl-btn" id="save-btn">Guardar (.json)</button>
-            <button class="ctrl-btn" id="load-btn">Cargar (.json)</button>
-            <input type="file" id="load-input" accept="application/json" style="display:none" />
-            <select class="examples-select" id="examples-select">
-              <option value="">Ejemplos…</option>
-            </select>
-          </div>
-        </div>
-        <div class="menu">
-          <button class="menu-btn" type="button" data-menu="edit" aria-expanded="false">Editar ▾</button>
-          <div class="menu-dropdown" data-menu-panel="edit">
-            <button class="ctrl-btn" id="undo-btn">Deshacer</button>
-            <button class="ctrl-btn" id="redo-btn">Rehacer</button>
-            <button class="ctrl-btn" id="copy-btn">Copiar (Ctrl+C)</button>
-            <button class="ctrl-btn" id="paste-btn">Pegar (Ctrl+V)</button>
-            <button class="ctrl-btn" id="delete-btn">Borrar selección</button>
-            <button class="ctrl-btn" id="rotate-btn">Rotar 90° (R)</button>
-            <button class="ctrl-btn" id="reset-view-btn">Centrar vista</button>
-          </div>
-        </div>
-        <div class="menu">
-          <button class="menu-btn" type="button" data-menu="run" aria-expanded="false">Ejecutar ▾</button>
-          <div class="menu-dropdown" data-menu-panel="run">
-            <button class="ctrl-btn" id="step-btn">Un paso</button>
-            <button class="ctrl-btn" id="run-btn">Ejecutar</button>
-          </div>
-        </div>
-        <div class="menu">
-          <button class="menu-btn" type="button" data-menu="info" aria-expanded="false">Info ▾</button>
-          <div class="menu-dropdown" data-menu-panel="info">
-            <button class="ctrl-btn" id="help-btn">Ayuda</button>
-            <button class="ctrl-btn" id="docs-btn">Documentación</button>
-            <button class="ctrl-btn" id="about-btn">Acerca de</button>
-          </div>
+    <div class="editor-toolbar">
+      <div class="menu">
+        <button class="menu-btn" type="button" data-menu="file" aria-expanded="false">Archivo ▾</button>
+        <div class="menu-dropdown" data-menu-panel="file">
+          <button class="ctrl-btn" id="new-btn">Nuevo</button>
+          <button class="ctrl-btn" id="save-btn">Guardar (.json)</button>
+          <button class="ctrl-btn" id="load-btn">Cargar (.json)</button>
+          <input type="file" id="load-input" accept="application/json" style="display:none" />
+          <button class="ctrl-btn" id="library-btn">Biblioteca…</button>
         </div>
       </div>
-      <div class="editor-layout">
-        <div class="palette-col" id="palette"></div>
-        <div class="canvas-col"><div id="editor-schematic"></div></div>
-        <div class="props-col">
-          <div id="props">Sin selección.</div>
-          <div class="legend" style="margin-top:0">
-            <span><i style="background:#2ecc71"></i> activo</span>
-            <span><i style="background:#e6b800"></i> X</span>
-          </div>
+      <div class="menu">
+        <button class="menu-btn" type="button" data-menu="edit" aria-expanded="false">Editar ▾</button>
+        <div class="menu-dropdown" data-menu-panel="edit">
+          <button class="ctrl-btn" id="undo-btn">Deshacer</button>
+          <button class="ctrl-btn" id="redo-btn">Rehacer</button>
+          <button class="ctrl-btn" id="copy-btn">Copiar (Ctrl+C)</button>
+          <button class="ctrl-btn" id="paste-btn">Pegar (Ctrl+V)</button>
+          <button class="ctrl-btn" id="delete-btn">Borrar selección</button>
+          <button class="ctrl-btn" id="rotate-btn">Rotar 90° (R)</button>
+          <button class="ctrl-btn" id="reset-view-btn">Centrar vista</button>
+        </div>
+      </div>
+      <div class="menu">
+        <button class="menu-btn" type="button" data-menu="run" aria-expanded="false">Ejecutar ▾</button>
+        <div class="menu-dropdown" data-menu-panel="run">
+          <button class="ctrl-btn" id="step-btn">Un paso</button>
+          <button class="ctrl-btn" id="run-btn">Ejecutar</button>
+        </div>
+      </div>
+      <div class="menu">
+        <button class="menu-btn" type="button" data-menu="info" aria-expanded="false">Info ▾</button>
+        <div class="menu-dropdown" data-menu-panel="info">
+          <button class="ctrl-btn" id="help-btn">Ayuda</button>
+          <button class="ctrl-btn" id="docs-btn">Documentación</button>
+          <button class="ctrl-btn" id="about-btn">Acerca de</button>
+        </div>
+      </div>
+    </div>
+    <div class="editor-layout">
+      <div class="palette-col" id="palette"></div>
+      <div class="canvas-col"><div id="editor-schematic"></div></div>
+      <div class="props-col">
+        <div id="editor-status"></div>
+        <div id="props">Sin selección.</div>
+        <div class="legend" style="margin-top:0">
+          <span><i style="background:var(--accent-green)"></i> activo</span>
+          <span><i style="background:var(--accent-amber)"></i> X</span>
         </div>
       </div>
     </div>
@@ -4625,9 +4753,9 @@
   function genericBoxSymbol(component, width, height) {
     return `
     <rect x="0" y="0" width="${width}" height="${height}" rx="6"
-          fill="#1e1e1e" stroke="#666" stroke-width="1.5" />
+          fill="#141c17" stroke="#7a9385" stroke-width="1.5" />
     <text x="${width / 2}" y="${height / 2}" text-anchor="middle" dominant-baseline="middle"
-          fill="#ddd" font-size="11" font-family="monospace">${escapeXml(component.type)}</text>
+          fill="#eef5f0" font-size="11" font-family="monospace">${escapeXml(component.type)}</text>
   `;
   }
   function logicGateSymbol(component, width, height) {
@@ -4638,19 +4766,19 @@
     let body;
     if (op === "AND" || op === "NAND") {
       body = `<path d="M0,0 H${bodyRight / 2} A${bodyRight / 2},${height / 2} 0 0 1 ${bodyRight / 2},${height}
-             H0 Z" fill="#1e1e1e" stroke="#8ab4f8" stroke-width="1.5" />`;
+             H0 Z" fill="#141c17" stroke="#8fa8ff" stroke-width="1.5" />`;
     } else if (op === "OR" || op === "NOR" || op === "XOR" || op === "XNOR") {
       body = `<path d="M0,0 Q${bodyRight * 0.4},${height / 2} 0,${height}
              Q${bodyRight * 0.75},${height} ${bodyRight},${height / 2}
-             Q${bodyRight * 0.75},0 0,0 Z" fill="#1e1e1e" stroke="#8ab4f8" stroke-width="1.5" />`;
+             Q${bodyRight * 0.75},0 0,0 Z" fill="#141c17" stroke="#8fa8ff" stroke-width="1.5" />`;
     } else if (op === "NOT" || op === "BUFFER") {
       body = `<path d="M0,0 L${bodyRight},${height / 2} L0,${height} Z"
-             fill="#1e1e1e" stroke="#8ab4f8" stroke-width="1.5" />`;
+             fill="#141c17" stroke="#8fa8ff" stroke-width="1.5" />`;
     } else {
       return genericBoxSymbol(component, width, height);
     }
-    const bubble = isInverting ? `<circle cx="${bodyRight + bubbleR}" cy="${height / 2}" r="${bubbleR}" fill="#1e1e1e" stroke="#8ab4f8" stroke-width="1.5" />` : "";
-    const label = `<text x="${width / 2}" y="${height + 12}" text-anchor="middle" fill="#888" font-size="9" font-family="monospace">${escapeXml(op)}</text>`;
+    const bubble = isInverting ? `<circle cx="${bodyRight + bubbleR}" cy="${height / 2}" r="${bubbleR}" fill="#141c17" stroke="#8fa8ff" stroke-width="1.5" />` : "";
+    const label = `<text x="${width / 2}" y="${height + 12}" text-anchor="middle" fill="#a9c2b5" font-size="9" font-family="monospace">${escapeXml(op)}</text>`;
     return body + bubble + label;
   }
   function signalActiveFraction(signal) {
@@ -4664,26 +4792,27 @@
     const cx = width / 2;
     const cy = height / 2;
     const lit = component.displayState?.value ? signalActiveFraction(component.displayState.value) : 0;
-    const fill = lit ? "#ff4d4d" : "#3a1414";
-    return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${fill}" stroke="#aa3333" stroke-width="1.5" />`;
+    const fill = lit ? "#ff3b3b" : "#2a1212";
+    const stroke = lit ? "#ff8080" : "#7a3d3d";
+    return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${fill}" stroke="${stroke}" stroke-width="1.5" />`;
   }
   function inputDeviceSymbol(component, width, height) {
     const value = component.state?.value;
     const active = signalActiveFraction(value);
-    const fill = active ? "#2ecc71" : "#333";
+    const fill = active ? "#39ff6a" : "#3a453f";
     return `
-    <rect x="0" y="0" width="${width}" height="${height}" rx="4" fill="#1e1e1e" stroke="#888" stroke-width="1.5" />
-    <rect x="8" y="${height / 2 - 8}" width="${width - 16}" height="16" rx="8" fill="${fill}" stroke="#555" />
-    <text x="${width / 2}" y="${height - 8}" text-anchor="middle" fill="#888" font-size="9" font-family="monospace">${escapeXml(component.type)}</text>
+    <rect x="0" y="0" width="${width}" height="${height}" rx="4" fill="#141c17" stroke="#9fb3a8" stroke-width="1.5" />
+    <rect x="8" y="${height / 2 - 8}" width="${width - 16}" height="16" rx="8" fill="${fill}" stroke="#5f7268" />
+    <text x="${width / 2}" y="${height - 8}" text-anchor="middle" fill="#a9c2b5" font-size="9" font-family="monospace">${escapeXml(component.type)}</text>
   `;
   }
   function flipFlopSymbol(component, width, height) {
     const clockNotch = `M8,${height - 14} L16,${height - 7} L8,${height} Z`;
     return `
-    <rect x="0" y="0" width="${width}" height="${height}" fill="#1e1e1e" stroke="#8ab4f8" stroke-width="1.5" />
-    <path d="${clockNotch}" fill="none" stroke="#8ab4f8" stroke-width="1.5" />
+    <rect x="0" y="0" width="${width}" height="${height}" fill="#141c17" stroke="#8fa8ff" stroke-width="1.5" />
+    <path d="${clockNotch}" fill="none" stroke="#8fa8ff" stroke-width="1.5" />
     <text x="${width / 2}" y="${height / 2}" text-anchor="middle" dominant-baseline="middle"
-          fill="#ddd" font-size="10" font-family="monospace">${escapeXml(component.type)}</text>
+          fill="#eef5f0" font-size="10" font-family="monospace">${escapeXml(component.type)}</text>
   `;
   }
   var SYMBOLS = /* @__PURE__ */ new Map([
@@ -4824,13 +4953,183 @@
     return Math.hypot(handle.x - x, handle.y - y) <= RESIZE_HANDLE_HIT_RADIUS;
   }
 
+  // src/ui/wire-router.js
+  var GRID = 10;
+  var WIRE_STUB = 16;
+  var SEARCH_MARGIN = 160;
+  var MAX_EXPANSIONS = 25e3;
+  var TURN_PENALTY = 3;
+  function snap(value) {
+    return Math.round(value / GRID) * GRID;
+  }
+  function isBlocked(x, y, boxes) {
+    for (const box of boxes) {
+      if (x >= box.x && x <= box.x + box.width && y >= box.y && y <= box.y + box.height) {
+        return true;
+      }
+    }
+    return false;
+  }
+  var MinHeap = class {
+    constructor() {
+      this.items = [];
+    }
+    get size() {
+      return this.items.length;
+    }
+    push(priority, value) {
+      this.items.push({ priority, value });
+      let i = this.items.length - 1;
+      while (i > 0) {
+        const parent = i - 1 >> 1;
+        if (this.items[parent].priority <= this.items[i].priority) break;
+        [this.items[parent], this.items[i]] = [this.items[i], this.items[parent]];
+        i = parent;
+      }
+    }
+    pop() {
+      const top = this.items[0];
+      const last = this.items.pop();
+      if (this.items.length > 0) {
+        this.items[0] = last;
+        let i = 0;
+        for (; ; ) {
+          const left = i * 2 + 1;
+          const right = i * 2 + 2;
+          let smallest = i;
+          if (left < this.items.length && this.items[left].priority < this.items[smallest].priority) smallest = left;
+          if (right < this.items.length && this.items[right].priority < this.items[smallest].priority) smallest = right;
+          if (smallest === i) break;
+          [this.items[smallest], this.items[i]] = [this.items[i], this.items[smallest]];
+          i = smallest;
+        }
+      }
+      return top?.value;
+    }
+  };
+  function gridAStar(start, goal, boxes) {
+    if (isBlocked(start.x, start.y, boxes) || isBlocked(goal.x, goal.y, boxes)) return null;
+    if (start.x === goal.x && start.y === goal.y) return [{ x: start.x, y: start.y }];
+    const key = (x, y) => `${x},${y}`;
+    const heuristic = (x, y) => (Math.abs(x - goal.x) + Math.abs(y - goal.y)) / GRID;
+    const DIRECTIONS = [
+      { dx: GRID, dy: 0 },
+      { dx: -GRID, dy: 0 },
+      { dx: 0, dy: GRID },
+      { dx: 0, dy: -GRID }
+    ];
+    const open = new MinHeap();
+    open.push(heuristic(start.x, start.y), { x: start.x, y: start.y, dir: null, g: 0 });
+    const bestCost = /* @__PURE__ */ new Map([[key(start.x, start.y), 0]]);
+    const cameFrom = /* @__PURE__ */ new Map();
+    let expansions = 0;
+    while (open.size > 0) {
+      if (++expansions > MAX_EXPANSIONS) return null;
+      const current = open.pop();
+      const currentKey = key(current.x, current.y);
+      if (current.g > (bestCost.get(currentKey) ?? Infinity)) continue;
+      if (current.x === goal.x && current.y === goal.y) {
+        const path = [{ x: current.x, y: current.y }];
+        let cursorKey = currentKey;
+        while (cameFrom.has(cursorKey)) {
+          const prev = cameFrom.get(cursorKey);
+          path.push({ x: prev.x, y: prev.y });
+          cursorKey = key(prev.x, prev.y);
+        }
+        return path.reverse();
+      }
+      for (const { dx, dy } of DIRECTIONS) {
+        const nx = current.x + dx;
+        const ny = current.y + dy;
+        if (isBlocked(nx, ny, boxes)) continue;
+        const turned = current.dir !== null && (current.dir.dx !== dx || current.dir.dy !== dy);
+        const stepCost = 1 + (turned ? TURN_PENALTY : 0);
+        const tentativeG = current.g + stepCost;
+        const nk = key(nx, ny);
+        if (tentativeG < (bestCost.get(nk) ?? Infinity)) {
+          bestCost.set(nk, tentativeG);
+          cameFrom.set(nk, { x: current.x, y: current.y });
+          open.push(tentativeG + heuristic(nx, ny), { x: nx, y: ny, dir: { dx, dy }, g: tentativeG });
+        }
+      }
+    }
+    return null;
+  }
+  function elbow(a, b) {
+    if (a.x === b.x || a.y === b.y) return [];
+    return [{ x: b.x, y: a.y }];
+  }
+  function midpointElbow(a, b, horizontalFirst) {
+    if (a.x === b.x || a.y === b.y) return [a, b];
+    const mid = horizontalFirst ? [
+      { x: (a.x + b.x) / 2, y: a.y },
+      { x: (a.x + b.x) / 2, y: b.y }
+    ] : [
+      { x: a.x, y: (a.y + b.y) / 2 },
+      { x: b.x, y: (a.y + b.y) / 2 }
+    ];
+    return [a, ...mid, b];
+  }
+  function simplify(points) {
+    const deduped = [points[0]];
+    for (let i = 1; i < points.length; i++) {
+      const prev = deduped[deduped.length - 1];
+      const curr = points[i];
+      if (prev.x === curr.x && prev.y === curr.y) continue;
+      deduped.push(curr);
+    }
+    if (deduped.length <= 2) return deduped;
+    const out = [deduped[0]];
+    for (let i = 1; i < deduped.length - 1; i++) {
+      const prev = out[out.length - 1];
+      const curr = deduped[i];
+      const next = deduped[i + 1];
+      const collinear = prev.x === curr.x && curr.x === next.x || prev.y === curr.y && curr.y === next.y;
+      if (collinear) continue;
+      out.push(curr);
+    }
+    out.push(deduped[deduped.length - 1]);
+    return out;
+  }
+  function routeOrthogonalWire(p1, dir1, p2, dir2, obstacles, fallbackPath) {
+    if (dir1.dx === 0 && dir1.dy === 0 || dir2.dx === 0 && dir2.dy === 0) {
+      return fallbackPath(p1, dir1, p2, dir2);
+    }
+    const stub1 = { x: p1.x + dir1.dx * WIRE_STUB, y: p1.y + dir1.dy * WIRE_STUB };
+    const stub2 = { x: p2.x + dir2.dx * WIRE_STUB, y: p2.y + dir2.dy * WIRE_STUB };
+    const start = { x: snap(stub1.x), y: snap(stub1.y) };
+    const goal = { x: snap(stub2.x), y: snap(stub2.y) };
+    const minX = Math.min(start.x, goal.x) - SEARCH_MARGIN;
+    const maxX = Math.max(start.x, goal.x) + SEARCH_MARGIN;
+    const minY = Math.min(start.y, goal.y) - SEARCH_MARGIN;
+    const maxY = Math.max(start.y, goal.y) + SEARCH_MARGIN;
+    const relevantBoxes = (obstacles ?? []).filter(
+      (box) => box.x <= maxX && box.x + box.width >= minX && box.y <= maxY && box.y + box.height >= minY
+    );
+    const horizontalFirst = dir1.dx !== 0;
+    let gridPath;
+    if (relevantBoxes.length === 0) {
+      gridPath = [start, ...midpointElbow(start, goal, horizontalFirst).slice(1, -1), goal];
+    } else {
+      gridPath = gridAStar(start, goal, relevantBoxes);
+    }
+    if (!gridPath) return fallbackPath(p1, dir1, p2, dir2);
+    return simplify([p1, stub1, ...elbow(stub1, start), ...gridPath, ...elbow(goal, stub2), stub2, p2]);
+  }
+  function simpleOrthogonalBend(p1, dir1, p2, dir2) {
+    const stub1 = { x: p1.x + dir1.dx * WIRE_STUB, y: p1.y + dir1.dy * WIRE_STUB };
+    const stub2 = { x: p2.x + dir2.dx * WIRE_STUB, y: p2.y + dir2.dy * WIRE_STUB };
+    const horizontalFirst = dir1.dx !== 0;
+    return simplify([p1, ...midpointElbow(stub1, stub2, horizontalFirst), p2]);
+  }
+
   // src/ui/renderer.js
   function signalColor(signal) {
-    if (!signal) return "#555555";
-    if (signal.hasUnknown()) return "#e6b800";
-    if (signal.isHighZ()) return "#6b7fd7";
+    if (!signal) return "#5c6d64";
+    if (signal.hasUnknown()) return "#ffd400";
+    if (signal.isHighZ()) return "#8fa3ff";
     const value = signal.toNumber();
-    return value ? "#2ecc71" : "#555555";
+    return value ? "#39ff6a" : "#5c6d64";
   }
   function renderPins(component, boxPos, boxSize) {
     let svg = "";
@@ -4840,12 +5139,33 @@
       const labelX = pin.isInput ? x + 6 : x - 6;
       const anchor = pin.isInput ? "start" : "end";
       svg += `<circle cx="${x}" cy="${y}" r="3.5" fill="${color}" stroke="#000" stroke-width="0.5" />`;
-      svg += `<text x="${labelX}" y="${y - 4}" text-anchor="${anchor}" font-size="8" fill="#999" font-family="monospace">${escapeXml(pin.name)}</text>`;
+      svg += `<text x="${labelX}" y="${y - 4}" text-anchor="${anchor}" font-size="8" fill="#b7c9be" font-family="monospace">${escapeXml(pin.name)}</text>`;
     }
     return svg;
   }
+  function pointsToPath(points) {
+    return `M ${points.map((pt) => `${pt.x},${pt.y}`).join(" L ")}`;
+  }
+  var OBSTACLE_PADDING = 8;
+  function buildObstacleBoxes(circuit, positions, boxSizes) {
+    const boxes = [];
+    for (const component of circuit.components.values()) {
+      const pos = positions.get(component.id);
+      const size = boxSizes.get(component.id);
+      if (!pos || !size) continue;
+      boxes.push({
+        ownerId: component.id,
+        x: pos.x - OBSTACLE_PADDING,
+        y: pos.y - OBSTACLE_PADDING,
+        width: size.width + OBSTACLE_PADDING * 2,
+        height: size.height + OBSTACLE_PADDING * 2
+      });
+    }
+    return boxes;
+  }
   function renderWires(circuit, positions, boxSizes) {
     let svg = "";
+    const allObstacles = buildObstacleBoxes(circuit, positions, boxSizes);
     for (const net of circuit.nets.values()) {
       if (net.pins.length < 2) continue;
       const color = signalColor(net.value);
@@ -4853,38 +5173,26 @@
       const firstPos = pinAbsolute(first, positions, boxSizes);
       if (!firstPos) continue;
       const firstDir = pinDirection(first);
+      const firstOwnerId = first.owner?.id;
       for (const pin of rest) {
         const pos = pinAbsolute(pin, positions, boxSizes);
         if (!pos) continue;
-        const d = orthogonalWirePath(firstPos, firstDir, pos, pinDirection(pin));
-        svg += `<path d="${d}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" />`;
+        const pinOwnerId = pin.owner?.id;
+        const obstacles = allObstacles.filter((box) => box.ownerId !== firstOwnerId && box.ownerId !== pinOwnerId);
+        const points = routeOrthogonalWire(firstPos, firstDir, pos, pinDirection(pin), obstacles, simpleOrthogonalBend);
+        svg += `<path d="${pointsToPath(points)}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" />`;
       }
     }
     return svg;
   }
-  var WIRE_STUB = 16;
-  function orthogonalWirePath(p1, dir1, p2, dir2) {
-    const stub1 = { x: p1.x + dir1.dx * WIRE_STUB, y: p1.y + dir1.dy * WIRE_STUB };
-    const stub2 = { x: p2.x + dir2.dx * WIRE_STUB, y: p2.y + dir2.dy * WIRE_STUB };
-    const horizontalFirst = dir1.dx !== 0;
-    const bend = horizontalFirst ? [
-      { x: (stub1.x + stub2.x) / 2, y: stub1.y },
-      { x: (stub1.x + stub2.x) / 2, y: stub2.y }
-    ] : [
-      { x: stub1.x, y: (stub1.y + stub2.y) / 2 },
-      { x: stub2.x, y: (stub1.y + stub2.y) / 2 }
-    ];
-    const points = [p1, stub1, ...bend, stub2, p2];
-    return `M ${points.map((pt) => `${pt.x},${pt.y}`).join(" L ")}`;
-  }
   function renderSelectionHighlight(boxPos, boxSize) {
     const pad = SELECTION_PAD;
-    return `<rect x="${boxPos.x - pad}" y="${boxPos.y - pad}" width="${boxSize.width + pad * 2}" height="${boxSize.height + pad * 2}" fill="none" stroke="#4da3ff" stroke-width="2" stroke-dasharray="6,3" rx="6" />`;
+    return `<rect x="${boxPos.x - pad}" y="${boxPos.y - pad}" width="${boxSize.width + pad * 2}" height="${boxSize.height + pad * 2}" fill="none" stroke="#7c93ff" stroke-width="2" stroke-dasharray="6,3" rx="6" />`;
   }
   function renderResizeHandle(boxPos, boxSize) {
     const { x, y } = resizeHandlePosition(boxPos, boxSize);
     const half = 5;
-    return `<rect x="${x - half}" y="${y - half}" width="${half * 2}" height="${half * 2}" fill="#4da3ff" stroke="#0a0f0d" stroke-width="1" style="cursor:nwse-resize" />`;
+    return `<rect x="${x - half}" y="${y - half}" width="${half * 2}" height="${half * 2}" fill="#7c93ff" stroke="#0a0f0d" stroke-width="1" style="cursor:nwse-resize" />`;
   }
   function renderWireDraftPreview(circuit, positions, boxSizes, wireDraft, cursor) {
     if (!wireDraft || !cursor) return "";
@@ -4893,8 +5201,8 @@
     if (!pin) return "";
     const pos = pinAbsolute(pin, positions, boxSizes);
     if (!pos) return "";
-    const d = orthogonalWirePath(pos, pinDirection(pin), cursor, { dx: 0, dy: 0 });
-    return `<path d="${d}" fill="none" stroke="#4da3ff" stroke-width="2" stroke-dasharray="4,4" stroke-linecap="round" opacity="0.8" /><circle cx="${cursor.x}" cy="${cursor.y}" r="4" fill="#4da3ff" opacity="0.8" />`;
+    const d = pointsToPath(simpleOrthogonalBend(pos, pinDirection(pin), cursor, { dx: 0, dy: 0 }));
+    return `<path d="${d}" fill="none" stroke="#7c93ff" stroke-width="2" stroke-dasharray="4,4" stroke-linecap="round" opacity="0.8" /><circle cx="${cursor.x}" cy="${cursor.y}" r="4" fill="#7c93ff" opacity="0.8" />`;
   }
   function renderCircuitToSVG(circuit, options = {}) {
     const {
@@ -5512,6 +5820,121 @@
     }
   };
 
+  // app/library.js
+  var DEFAULT_ROOT_PATH = "circuitos";
+  function detectGithubRepo(loc) {
+    const hostMatch = /^([^.]+)\.github\.io$/i.exec(loc.hostname ?? "");
+    if (!hostMatch) return null;
+    const owner = hostMatch[1];
+    const firstSegment = (loc.pathname ?? "").split("/").filter(Boolean)[0];
+    if (!firstSegment) return null;
+    return { owner, repo: firstSegment };
+  }
+  function rawUrl(owner, repo, branch, path) {
+    return `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${path}`;
+  }
+  function buildTreeFromPaths(entries, rootPath = DEFAULT_ROOT_PATH) {
+    const prefix = `${rootPath}/`;
+    const root = { name: rootPath, path: rootPath, readmePath: null, files: [], folders: /* @__PURE__ */ new Map() };
+    for (const entry of entries) {
+      if (!entry || entry.type !== "blob" || typeof entry.path !== "string") continue;
+      if (!entry.path.startsWith(prefix)) continue;
+      const relative = entry.path.slice(prefix.length);
+      if (!relative) continue;
+      const segments = relative.split("/");
+      const fileName = segments.pop();
+      let node = root;
+      let currentPath = rootPath;
+      for (const segment of segments) {
+        currentPath = `${currentPath}/${segment}`;
+        if (!node.folders.has(segment)) {
+          node.folders.set(segment, {
+            name: segment,
+            path: currentPath,
+            readmePath: null,
+            files: [],
+            folders: /* @__PURE__ */ new Map()
+          });
+        }
+        node = node.folders.get(segment);
+      }
+      if (/^readme\.txt$/i.test(fileName)) {
+        node.readmePath = entry.path;
+      } else if (/\.json$/i.test(fileName)) {
+        node.files.push({
+          name: fileName,
+          label: fileName.replace(/\.json$/i, ""),
+          path: entry.path
+        });
+      }
+    }
+    return finalizeNode(root);
+  }
+  function finalizeNode(node) {
+    node.files.sort((a, b) => a.label.localeCompare(b.label, "es"));
+    node.folders = [...node.folders.values()].map(finalizeNode).sort((a, b) => a.name.localeCompare(b.name, "es"));
+    return node;
+  }
+  function firstNonEmptyLine(text) {
+    for (const line of text.split("\n")) {
+      const trimmed = line.trim();
+      if (trimmed) return trimmed;
+    }
+    return "";
+  }
+  async function resolveDescriptions(node, { owner, repo, branch, fetchImpl }) {
+    if (node.readmePath) {
+      try {
+        const response = await fetchImpl(rawUrl(owner, repo, branch, node.readmePath));
+        if (response.ok) {
+          node.description = firstNonEmptyLine(await response.text());
+        }
+      } catch {
+      }
+    }
+    node.description = node.description ?? "";
+    for (const folder of node.folders) {
+      await resolveDescriptions(folder, { owner, repo, branch, fetchImpl });
+    }
+    return node;
+  }
+  function attachDownloadUrls(node, { owner, repo, branch }) {
+    for (const file of node.files) {
+      file.downloadUrl = rawUrl(owner, repo, branch, file.path);
+    }
+    for (const folder of node.folders) {
+      attachDownloadUrls(folder, { owner, repo, branch });
+    }
+    return node;
+  }
+  async function fetchLibraryTree(owner, repo, { rootPath = DEFAULT_ROOT_PATH, fetchImpl = fetch } = {}) {
+    const repoResponse = await fetchImpl(`https://api.github.com/repos/${owner}/${repo}`);
+    if (!repoResponse.ok) {
+      throw new Error(`No se pudo consultar el repositorio "${owner}/${repo}" (HTTP ${repoResponse.status})`);
+    }
+    const repoInfo = await repoResponse.json();
+    const branch = repoInfo.default_branch ?? "main";
+    const treeResponse = await fetchImpl(
+      `https://api.github.com/repos/${owner}/${repo}/git/trees/${encodeURIComponent(branch)}?recursive=1`
+    );
+    if (!treeResponse.ok) {
+      throw new Error(`No se pudo listar el \xE1rbol de archivos (HTTP ${treeResponse.status})`);
+    }
+    const treeData = await treeResponse.json();
+    const entries = Array.isArray(treeData.tree) ? treeData.tree : [];
+    const tree = buildTreeFromPaths(entries, rootPath);
+    attachDownloadUrls(tree, { owner, repo, branch });
+    await resolveDescriptions(tree, { owner, repo, branch, fetchImpl });
+    return tree;
+  }
+  async function fetchLibraryFileText(downloadUrl, { fetchImpl = fetch } = {}) {
+    const response = await fetchImpl(downloadUrl);
+    if (!response.ok) {
+      throw new Error(`No se pudo descargar "${downloadUrl}" (HTTP ${response.status})`);
+    }
+    return response.text();
+  }
+
   // app/editor.js
   var CATEGORY_LABELS = {
     "logic-gates": "Puertas l\xF3gicas",
@@ -5531,23 +5954,26 @@
     composite: "Subcircuitos"
   };
   var CATEGORY_COLORS = {
-    "logic-gates": "#2ecc71",
-    sequential: "#3498db",
-    combinational: "#9b59b6",
-    arithmetic: "#e67e22",
-    bus: "#1abc9c",
-    inputs: "#e74c3c",
-    memory: "#f1c40f",
-    counters: "#00cec9",
-    displays: "#e84393",
-    educational: "#74b9ff",
-    programmable: "#a29bfe",
-    instruments: "#fd79a8",
-    ttl74xx: "#fdcb6e",
-    "high-level": "#55efc4",
-    composite: "#81ecec"
+    // Fase 1.5: paleta general de la app más brillante — el verde de esta
+    // categoría se alinea con --accent-green para que la paleta lateral se
+    // sienta parte de la misma identidad visual que el resto de la UI.
+    "logic-gates": "#39ff6a",
+    sequential: "#4aa8ff",
+    combinational: "#c07bff",
+    arithmetic: "#ff9d3d",
+    bus: "#2be0c4",
+    inputs: "#ff5c5c",
+    memory: "#ffe14d",
+    counters: "#2fe8e0",
+    displays: "#ff5fb1",
+    educational: "#8ec4ff",
+    programmable: "#bcaeff",
+    instruments: "#ff9ac4",
+    ttl74xx: "#ffd873",
+    "high-level": "#6ff5cf",
+    composite: "#8ff5f5"
   };
-  var DEFAULT_CATEGORY_COLOR = "#7a8a80";
+  var DEFAULT_CATEGORY_COLOR = "#9fb6a9";
   function paletteCategories() {
     return ComponentRegistry.categories().sort().map((category) => ({
       category,
@@ -5589,7 +6015,7 @@
     loadBtn,
     loadInput,
     newBtn,
-    examplesSelect,
+    libraryBtn,
     helpBtn,
     docsBtn,
     aboutBtn
@@ -5604,6 +6030,7 @@
     let pinchState = null;
     let running = false;
     let runHandle = null;
+    let libraryTreeCache = null;
     const view = { panX: 0, panY: 0, zoom: 1 };
     let panState = null;
     function applyViewTransform() {
@@ -6315,18 +6742,36 @@
       URL.revokeObjectURL(url);
       statusEl.textContent = `Guardado: ${a.download}`;
     };
+    async function loadCircuitData(data, { confirmMessage, successMessage, errorPrefix, skipConfirm = false }) {
+      if (!skipConfirm && state.circuit.components.size > 0) {
+        const ok = await showConfirmDialog(confirmMessage ?? "\xBFDescartar el circuito actual y cargar este?");
+        if (!ok) return false;
+      }
+      try {
+        const loaded = Circuit.deserialize(data);
+        attachCircuit(loaded, { treatExistingAsManual: true });
+        statusEl.textContent = typeof successMessage === "function" ? successMessage(loaded) : successMessage;
+        render();
+        return true;
+      } catch (err) {
+        statusEl.textContent = `${errorPrefix}: ${err.message}`;
+        return false;
+      }
+    }
     loadBtn.onclick = () => loadInput.click();
     loadInput.addEventListener("change", (evt) => {
       const file = evt.target.files?.[0];
       if (!file) return;
       const reader = new FileReader();
-      reader.onload = () => {
+      reader.onload = async () => {
         try {
           const data = JSON.parse(reader.result);
-          const loaded = Circuit.deserialize(data);
-          attachCircuit(loaded, { treatExistingAsManual: true });
-          statusEl.textContent = `Cargado: ${file.name} (${loaded.components.size} componentes)`;
-          render();
+          await loadCircuitData(data, {
+            successMessage: (loaded) => `Cargado: ${file.name} (${loaded.components.size} componentes)`,
+            errorPrefix: "Error al cargar",
+            skipConfirm: true
+            // "Cargar (.json)" es ya de por sí una acción deliberada del usuario (eligió el archivo en el selector nativo); nunca pedía confirmación de descarte y se mantiene así
+          });
         } catch (err) {
           statusEl.textContent = "Error al cargar: " + err.message;
         }
@@ -6334,31 +6779,193 @@
       reader.readAsText(file);
       evt.target.value = "";
     });
-    for (const [key, example] of Object.entries(EXAMPLES)) {
-      const opt = document.createElement("option");
-      opt.value = key;
-      opt.textContent = example.title;
-      examplesSelect.appendChild(opt);
-    }
-    examplesSelect.addEventListener("change", async () => {
-      const key = examplesSelect.value;
-      examplesSelect.value = "";
-      closeAllMenus();
-      if (!key) return;
-      const example = EXAMPLES[key];
-      if (state.circuit.components.size > 0) {
-        const ok = await showConfirmDialog("\xBFDescartar el circuito actual y cargar el ejemplo?");
-        if (!ok) return;
+    async function loadRemoteLibraryTree({ forceRefresh = false } = {}) {
+      if (libraryTreeCache && !forceRefresh) return libraryTreeCache;
+      const repo = detectGithubRepo(window.location);
+      if (!repo) {
+        const result = { unavailable: true };
+        libraryTreeCache = result;
+        return result;
       }
       try {
-        const loaded = Circuit.deserialize(example.data);
-        attachCircuit(loaded, { treatExistingAsManual: true });
-        statusEl.textContent = `${example.title} \u2014 ${example.description}`;
-        render();
+        const tree = await fetchLibraryTree(repo.owner, repo.repo);
+        const result = { tree };
+        libraryTreeCache = result;
+        return result;
       } catch (err) {
-        statusEl.textContent = "Error al cargar el ejemplo: " + err.message;
+        return { error: err.message };
       }
-    });
+    }
+    function renderLibraryFileRow(container, { label, getData, confirmMessage, closeOnLoad }) {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "lib-file-btn";
+      btn.textContent = label;
+      btn.onclick = async () => {
+        btn.disabled = true;
+        try {
+          const data = await getData();
+          const loaded = await loadCircuitData(data, {
+            confirmMessage,
+            successMessage: `Cargado desde la Biblioteca: ${label}`,
+            errorPrefix: "Error al cargar desde la Biblioteca"
+          });
+          if (loaded) closeOnLoad();
+        } catch (err) {
+          statusEl.textContent = "Error al descargar de la Biblioteca: " + err.message;
+        } finally {
+          btn.disabled = false;
+        }
+      };
+      container.appendChild(btn);
+    }
+    function renderLibraryFolderHeader(parent, { label, description }) {
+      const header = document.createElement("button");
+      header.type = "button";
+      header.className = "lib-folder-header";
+      const chevron = document.createElement("span");
+      chevron.className = "lib-folder-chevron";
+      chevron.textContent = "\u25B6";
+      const labelEl = document.createElement("span");
+      labelEl.textContent = label;
+      header.append(chevron, labelEl);
+      if (description) {
+        const descEl = document.createElement("span");
+        descEl.className = "lib-folder-desc";
+        descEl.textContent = description;
+        descEl.title = description;
+        header.appendChild(descEl);
+      }
+      const items = document.createElement("div");
+      items.className = "lib-folder-items";
+      header.onclick = () => {
+        const isOpen = items.classList.toggle("open");
+        chevron.classList.toggle("open", isOpen);
+      };
+      parent.append(header, items);
+      return items;
+    }
+    function renderLibraryTreeNode(container, node, { closeOnLoad }) {
+      const items = renderLibraryFolderHeader(container, { label: node.name, description: node.description });
+      if (node.files.length === 0 && node.folders.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "lib-empty";
+        empty.textContent = "(carpeta vac\xEDa)";
+        items.appendChild(empty);
+      }
+      for (const file of node.files) {
+        renderLibraryFileRow(items, {
+          label: file.label,
+          getData: async () => JSON.parse(await fetchLibraryFileText(file.downloadUrl)),
+          confirmMessage: `\xBFDescartar el circuito actual y cargar "${file.label}" desde la Biblioteca?`,
+          closeOnLoad
+        });
+      }
+      for (const folder of node.folders) {
+        renderLibraryTreeNode(items, folder, { closeOnLoad });
+      }
+    }
+    async function showLibraryModal() {
+      const overlay = document.createElement("div");
+      overlay.className = "modal-overlay";
+      const box = document.createElement("div");
+      box.className = "modal-box";
+      const h2 = document.createElement("h2");
+      h2.textContent = "Biblioteca de circuitos";
+      const intro = document.createElement("p");
+      intro.textContent = 'Ejemplos incluidos en la app, m\xE1s los circuitos disponibles en circuitos/ del repositorio. Un clic carga el circuito (con la misma confirmaci\xF3n de descarte que "Cargar").';
+      box.append(h2, intro);
+      function closeOnLoad() {
+        overlay.remove();
+      }
+      const examplesTitle = document.createElement("div");
+      examplesTitle.className = "lib-section-title";
+      examplesTitle.textContent = "Incluidos en la app";
+      box.appendChild(examplesTitle);
+      const examplesItems = renderLibraryFolderHeader(box, { label: "Ejemplos" });
+      for (const [key, example] of Object.entries(EXAMPLES)) {
+        renderLibraryFileRow(examplesItems, {
+          label: `${example.title} \u2014 ${example.description}`,
+          getData: async () => example.data,
+          confirmMessage: "\xBFDescartar el circuito actual y cargar el ejemplo?",
+          closeOnLoad
+        });
+      }
+      const remoteTitle = document.createElement("div");
+      remoteTitle.className = "lib-section-title";
+      remoteTitle.textContent = "Repositorio (circuitos/)";
+      box.appendChild(remoteTitle);
+      const remoteContainer = document.createElement("div");
+      box.appendChild(remoteContainer);
+      async function paintRemote({ forceRefresh = false } = {}) {
+        remoteContainer.innerHTML = "";
+        const loading = document.createElement("div");
+        loading.className = "lib-loading";
+        loading.textContent = "Consultando el repositorio\u2026";
+        remoteContainer.appendChild(loading);
+        const result = await loadRemoteLibraryTree({ forceRefresh });
+        remoteContainer.innerHTML = "";
+        if (result.unavailable) {
+          const msg = document.createElement("div");
+          msg.className = "lib-error";
+          msg.textContent = "No disponible: esta app no se est\xE1 sirviendo desde GitHub Pages (usuario.github.io/repositorio), as\xED que no se puede listar circuitos/ del repositorio. Los Ejemplos de arriba siguen funcionando igual.";
+          remoteContainer.appendChild(msg);
+          return;
+        }
+        if (result.error) {
+          const msg = document.createElement("div");
+          msg.className = "lib-error";
+          msg.textContent = `No se pudo consultar el repositorio: ${result.error}`;
+          remoteContainer.appendChild(msg);
+          const retryBtn = document.createElement("button");
+          retryBtn.className = "ctrl-btn";
+          retryBtn.textContent = "Reintentar";
+          retryBtn.onclick = () => paintRemote({ forceRefresh: true });
+          remoteContainer.appendChild(retryBtn);
+          return;
+        }
+        const { tree } = result;
+        if (tree.files.length === 0 && tree.folders.length === 0) {
+          const empty = document.createElement("div");
+          empty.className = "lib-empty";
+          empty.textContent = 'El repositorio no tiene ninguna carpeta "circuitos/" todav\xEDa.';
+          remoteContainer.appendChild(empty);
+          return;
+        }
+        for (const file of tree.files) {
+          renderLibraryFileRow(remoteContainer, {
+            label: file.label,
+            getData: async () => JSON.parse(await fetchLibraryFileText(file.downloadUrl)),
+            confirmMessage: `\xBFDescartar el circuito actual y cargar "${file.label}" desde la Biblioteca?`,
+            closeOnLoad
+          });
+        }
+        for (const folder of tree.folders) {
+          renderLibraryTreeNode(remoteContainer, folder, { closeOnLoad });
+        }
+        const refreshBtn = document.createElement("button");
+        refreshBtn.className = "ctrl-btn";
+        refreshBtn.textContent = "Actualizar";
+        refreshBtn.title = "Volver a consultar el repositorio (por si la estructura de carpetas ha cambiado)";
+        refreshBtn.onclick = () => paintRemote({ forceRefresh: true });
+        remoteContainer.appendChild(refreshBtn);
+      }
+      const closeBtn = document.createElement("button");
+      closeBtn.className = "ctrl-btn";
+      closeBtn.textContent = "Cerrar";
+      closeBtn.onclick = () => overlay.remove();
+      box.appendChild(closeBtn);
+      overlay.onclick = (evt) => {
+        if (evt.target === overlay) overlay.remove();
+      };
+      overlay.appendChild(box);
+      document.body.appendChild(overlay);
+      paintRemote();
+    }
+    libraryBtn.onclick = () => {
+      closeAllMenus();
+      showLibraryModal();
+    };
     attachCircuit(new Circuit(), { treatExistingAsManual: false });
     render();
     return state;
@@ -6383,7 +6990,7 @@
     loadBtn: document.getElementById("load-btn"),
     loadInput: document.getElementById("load-input"),
     newBtn: document.getElementById("new-btn"),
-    examplesSelect: document.getElementById("examples-select"),
+    libraryBtn: document.getElementById("library-btn"),
     helpBtn: document.getElementById("help-btn"),
     docsBtn: document.getElementById("docs-btn"),
     aboutBtn: document.getElementById("about-btn")
